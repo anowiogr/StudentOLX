@@ -25,7 +25,7 @@ try {
     // Tworzenie bazy danych
     $createDatabase = "CREATE DATABASE IF NOT EXISTS studentolx";
     $pdo->exec($createDatabase);
-    $pdo->exec("USE studentolx");
+    $pdo->exec("USE $dbname");
 
     // Tabela type
     $createTypeTable = "CREATE TABLE IF NOT EXISTS type (
