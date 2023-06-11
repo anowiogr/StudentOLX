@@ -13,7 +13,7 @@ foreach ($_POST as $value){
 require_once "connect.php";
 
 try {
-	$stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+	$stmt = $conn->prepare("SELECT * FROM `accounts` WHERE email=?");
 	$stmt->bind_param("s", $_POST["email"]);
 	$stmt->execute();
 
@@ -26,14 +26,18 @@ try {
 
 		$user = $result->fetch_assoc();
 		$stmt->close();
+
+        $pass = password_hash($_POST["pass"], PASSWORD_ARGON2ID);
+
 		//print_r($user);
+        //print_r($pass);
 		if (password_verify($_POST["pass"], $user["password"])){
 			$_SESSION["logged"]["firstName"] = $user["firstName"];
 			$_SESSION["logged"]["lastName"] = $user["lastName"];
 			$_SESSION["logged"]["session_id"] = session_id();
 			//echo $_SESSION["logged"]["session_id"];
 			//echo  session_status();
-			$_SESSION["logged"]["id_r"] = $user["id_r"];
+			$_SESSION["logged"]["account_type"] = $user["account_type"];
 			$_SESSION["logged"]["last_activity"] = time();
 			//print_r($_SESSION["logged"]);
 			header("location: ../logged.php");
