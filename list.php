@@ -16,7 +16,7 @@
 
 	</head>
 
-	<nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark">
+	<nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark prelative">
                     
             <div class="container">
 
@@ -46,8 +46,17 @@
 
 	<body class="d-flex flex-column h-100">
 	
-
-		<!--TU WKLEJ TREŚĆ STRONY-->
+			<div class="container prelative">
+				<br />
+				<div class="box">
+                        <img src="images/icon.png" class="aimg" width="100px" height="100px" />
+                        <div class="box-text">
+                            <span class="h4 atitle">Przykładowe ogłoszenie</span>
+                            <span class="h3 aprice">10 zł</span><span class="ainfo">Poznań, Stare Miasto - 9 kwietnia 2023</span>
+                        </div>
+                        
+                    </div>
+				</div>
 
 
 

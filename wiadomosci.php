@@ -16,23 +16,23 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 	</head>
 
-	<nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark" style="position: relative;">
+	<nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark prelative">
                     
             <div class="container">
 
 				<a href="#"><img src="images/icon.png" class="bi" width="40" height="40" /></a>
-                            
+
                 <button type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" class="navbar-toggler justify-content-center" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
-                           
+
                     <ul class="navbar-nav">
-						<br /> 
+						<br />
                         <li class="nav-item active">
 								<button type="button" class="btn btn-outline-light me-2">Zaloguj</button>
-							
+
 						</li>
 						<br />
                         <li class="nav-item active">
@@ -47,8 +47,8 @@
 	<body class="d-flex flex-column h-100">
 
         <br />
-		<div class="container" style="position: relative;">
-           
+		<div class="container prelative">
+
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="messageBuy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab" aria-controls="buy" aria-selected="true">Kupujesz</button>
@@ -61,12 +61,16 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="buy" role="tabpanel" aria-labelledby="messageBuy-tab">
                     <br />
-                    Twoje wiadomości dotyczące zakupów.
+
+
+
                 </div>
 
                 <div class="tab-pane fade" id="sell" role="tabpanel" aria-labelledby="messageSell-tab">
                     <br />
-                    Twoje wiadomości dotyczące przedmotów sprzedawanych.
+
+
+
                 </div>
             </div>
 

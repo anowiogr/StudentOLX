@@ -1,0 +1,38 @@
+.prelative{
+    position: relative;
+}
+.box{
+    border-bottom: 1px solid #212121;
+    box-shadow: 2px 2px 5px #212121;
+    padding: 5px;
+    
+}
+.box::after{
+    content:'';
+    display: block;
+    clear: both;
+}
+.aimg{
+    float: left;
+    height: 10%;
+    width: 10%;
+    max-width: 100px;
+    max-height: 100px;
+}
+.box-text{
+    float: right;
+    width: 90%;
+    
+}
+.atitle{
+    float: left;
+}
+.ainfo{
+    margin:2px;
+    clear: both;
+    display: block;
+    font-size: 10px;
+}
+.aprice{
+     float: right;
+}
