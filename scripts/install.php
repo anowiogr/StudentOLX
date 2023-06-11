@@ -44,12 +44,13 @@ try {
 
     // Tabela accounts
     $createAccountsTable = "CREATE TABLE IF NOT EXISTS accounts (
-        accountid INT NOT NULL,
-        userid INT NOT NULL,
+        accountid INT NOT NULL AUTO_INCREMENT,
+        userid INT NOT NULL AUTO_INCREMENT,
         login VARCHAR(100) NOT NULL,
         password VARCHAR(50) NOT NULL,
         account_type VARCHAR(3) NOT NULL DEFAULT '222',
-        verified TINYINT(1) NOT NULL
+        verified TINYINT(1) NOT NULL,
+        PRIMARY KEY (accountid)
     )";
     
     $pdo->exec($createAccountsTable);
