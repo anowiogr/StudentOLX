@@ -1,126 +1,131 @@
 <?php
+require 'connect.php';
 
-require_once 'connect.php';
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-function checkDatabaseExists() {
-    global $pdo, $dbname;
+    // Usuwanie istniejących tabel
+    $tables = [
+        'accounts',
+        'type',
+        'auctions',
+        'category',
+        'file_to_auction',
+        'message',
+        'message_link',
+        'users'
+    ];
 
-    $stmt = $pdo->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?");
-    $stmt->execute([$dbname]);
-    return $stmt->rowCount() > 0;
-}
-
-function createNewDatabase() {
-    global $pdo, $dbname;
-
-    $stmt = $pdo->prepare("CREATE DATABASE IF NOT EXISTS $dbname");
-    $stmt->execute();
-    echo "Utworzono nową bazę danych '$dbname'.<br>";
-}
-
-function deleteExistingTables() {
-    global $pdo;
-
-    $stmt = $pdo->prepare("DROP TABLE IF EXISTS accounts, auction, category, file_to_auction, message, message_link, users");
-    $stmt->execute();
-    echo "Usunięto istniejące tabele z bazy danych.<br>";
-}
-
-function createAllTables() {
-    global $pdo;
-
-    $stmt = $pdo->prepare("
-        -- Twój kod SQL tworzący tabele
-        CREATE TABLE IF NOT EXISTS accounts (
-            accountid int(11) NOT NULL AUTO_INCREMENT,
-            userid int(11) NOT NULL,
-            login varchar(100) NOT NULL,
-            password varchar(50) NOT NULL,
-            account_type int(11) NOT NULL,
-            verified tinyint(1) NOT NULL,
-            PRIMARY KEY (accountid)
-        );
-
-        CREATE TABLE IF NOT EXISTS auction (
-            auctionid int(11) NOT NULL AUTO_INCREMENT,
-            accountid int(11) NOT NULL,
-            categoryid int(11) NOT NULL,
-            title varchar(100) DEFAULT NULL,
-            description text,
-            used tinyint(1) DEFAULT NULL,
-            private tinyint(1) DEFAULT NULL,
-            date_start date DEFAULT NULL,
-            date_end date DEFAULT NULL,
-            sold tinyint(1) DEFAULT NULL,
-            buyerid int(11) DEFAULT NULL,
-            PRIMARY KEY (auctionid)
-        );
-
-        CREATE TABLE IF NOT EXISTS category (
-            categoryid int(11) NOT NULL AUTO_INCREMENT,
-            name int(11) NOT NULL,
-            in_treee int(11) DEFAULT NULL,
-            PRIMARY KEY (categoryid)
-        );
-
-        CREATE TABLE IF NOT EXISTS file_to_auction (
-            fileid int(11) NOT NULL AUTO_INCREMENT,
-            auctionid int(11) NOT NULL,
-            link varchar(200) NOT NULL,
-            PRIMARY KEY (fileid)
-        );
-
-        CREATE TABLE IF NOT EXISTS message (
-            id int(11) NOT NULL AUTO_INCREMENT,
-            mlid int(11) NOT NULL,
-            date date NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            description text,
-            PRIMARY KEY (id)
-        );
-
-        CREATE TABLE IF NOT EXISTS message_link (
-            mlid int(11) NOT NULL AUTO_INCREMENT,
-            sellerid int(11) NOT NULL,
-            buyerid int(11) NOT NULL,
-            auctionid int(11) NOT NULL,
-            PRIMARY KEY (mlid)
-        );
-
-        CREATE TABLE IF NOT EXISTS users (
-            userid int(11) NOT NULL AUTO_INCREMENT,
-            login varchar(100) NOT NULL,
-            password varchar(100) NOT NULL,
-            email varchar(100) NOT NULL,
-            name varchar(100) DEFAULT NULL,
-            surname varchar(100) DEFAULT NULL,
-            phone varchar(15) DEFAULT NULL,
-            address varchar(200) DEFAULT NULL,
-            postcode varchar(6) DEFAULT NULL,
-            city varchar(100) DEFAULT NULL,
-            province varchar(50) DEFAULT NULL,
-            PRIMARY KEY (userid)
-        );
-    ");
-
-    $stmt->execute();
-    echo "Utworzono wszystkie tabele w bazie danych.<br>";
-}
-
-// Sprawdzanie istnienia bazy danych
-if (checkDatabaseExists()) {
-    echo "Baza danych '$dbname' istnieje.<br>";
-    $answer = readline("Czy chcesz usunąć istniejącą bazę danych i utworzyć nową z wszystkimi tabelami? (tak/nie): ");
-    if ($answer === 'tak') {
-        deleteExistingTables();
-        createAllTables();
+    foreach ($tables as $table) {
+        $dropTable = "DROP TABLE IF EXISTS $table";
+        $pdo->exec($dropTable);
     }
-} else {
-    echo "Baza danych '$dbname' nie istnieje.<br>";
-    $answer = readline("Czy chcesz utworzyć nową bazę danych z wszystkimi tabelami? (tak/nie): ");
-    if ($answer === 'tak') {
-        createNewDatabase();
-        createAllTables();
-    }
-}
 
+    // Tworzenie bazy danych
+    $createDatabase = "CREATE DATABASE IF NOT EXISTS studentolx";
+    $pdo->exec($createDatabase);
+    $pdo->exec("USE studentolx");
+
+    // Tabela type
+    $createTypeTable = "CREATE TABLE IF NOT EXISTS type (
+        type_id VARCHAR(3) NOT NULL PRIMARY KEY,
+        type_name VARCHAR(20) NOT NULL
+    )";
+    $pdo->exec($createTypeTable);
+
+    // Wstawianie danych do tabeli type
+    $insertTypes = "INSERT INTO type (type_id, type_name)
+                    VALUES
+                        ('002', 'user'),
+                        ('101', 'mod'),
+                        ('010', 'admin')";
+    $pdo->exec($insertTypes);
+
+    // Tabela accounts
+    $createAccountsTable = "CREATE TABLE IF NOT EXISTS accounts (
+        accountid INT NOT NULL,
+        userid INT NOT NULL,
+        login VARCHAR(100) NOT NULL,
+        password VARCHAR(50) NOT NULL,
+        account_type VARCHAR(3) NOT NULL DEFAULT '002',
+        verified TINYINT(1) NOT NULL
+    )";
+    
+    $pdo->exec($createAccountsTable);
+
+    // Tabela auctions
+    $createAuctionTable = "CREATE TABLE IF NOT EXISTS auctions (
+        auctionid INT NOT NULL,
+        accountid INT NOT NULL,
+        categoryid INT NOT NULL,
+        title VARCHAR(100),
+        description TEXT,
+        used TINYINT(1),
+        private TINYINT(1),
+        date_start DATE,
+        date_end DATE,
+        selled TINYINT(1),
+        buyerid INT,
+        PRIMARY KEY (auctionid)
+    )";
+    $pdo->exec($createAuctionTable);
+
+    // Tabela category
+    $createCategoryTable = "CREATE TABLE IF NOT EXISTS category (
+        categoryid INT NOT NULL,
+        name INT NOT NULL,
+        in_tree INT,
+        PRIMARY KEY (categoryid)
+    )";
+    $pdo->exec($createCategoryTable);
+
+    // Tabela file_to_auction
+    $createFileToAuctionTable = "CREATE TABLE IF NOT EXISTS file_to_auction (
+        fileid INT NOT NULL,
+        auctionid INT NOT NULL,
+        link VARCHAR(200) NOT NULL,
+        PRIMARY KEY (fileid)
+    )";
+    $pdo->exec($createFileToAuctionTable);
+
+    // Tabela message
+    $createMessageTable = "CREATE TABLE IF NOT EXISTS message (
+        id INT NOT NULL,
+        mlid INT NOT NULL,
+        date DATE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        description TEXT,
+        PRIMARY KEY (id)
+    )";
+    $pdo->exec($createMessageTable);
+
+    // Tabela message_link
+    $createMessageLinkTable = "CREATE TABLE IF NOT EXISTS message_link (
+        mlid INT NOT NULL,
+        sellerid INT NOT NULL,
+        buyerid INT NOT NULL,
+        auctionid INT NOT NULL,
+        PRIMARY KEY (mlid)
+    )";
+    $pdo->exec($createMessageLinkTable);
+
+    // Tabela users
+    $createUsersTable = "CREATE TABLE IF NOT EXISTS users (
+        userid INT NOT NULL,
+        firstname VARCHAR(50),
+        lastname VARCHAR(150),
+        email VARCHAR(250),
+        phone VARCHAR(9),
+        address VARCHAR(200),
+        codezip VARCHAR(6),
+        city VARCHAR(50),
+        country VARCHAR(50),
+        PRIMARY KEY (userid)
+    )";
+    $pdo->exec($createUsersTable);
+
+    echo "Baza danych została utworzona pomyślnie.";
+} catch (PDOException $e) {
+    die("Błąd połączenia lub tworzenia bazy danych: " . $e->getMessage());
+}
 ?>
