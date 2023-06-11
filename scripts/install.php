@@ -25,7 +25,7 @@ try {
     // Tworzenie bazy danych
     $createDatabase = "CREATE DATABASE IF NOT EXISTS studentolx";
     $pdo->exec($createDatabase);
-    $pdo->exec("USE studentolx");
+    $pdo->exec("USE $dbname");
 
     // Tabela type
     $createTypeTable = "CREATE TABLE IF NOT EXISTS type (
@@ -37,26 +37,33 @@ try {
     // Wstawianie danych do tabeli type
     $insertTypes = "INSERT INTO type (type_id, type_name)
                     VALUES
-                        ('002', 'user'),
+                        ('222', 'user'),
                         ('101', 'mod'),
-                        ('010', 'admin')";
+                        ('191', 'admin')";
     $pdo->exec($insertTypes);
 
     // Tabela accounts
     $createAccountsTable = "CREATE TABLE IF NOT EXISTS accounts (
-        accountid INT NOT NULL,
-        userid INT NOT NULL,
+        accountid INT NOT NULL AUTO_INCREMENT,
         login VARCHAR(100) NOT NULL,
         password VARCHAR(50) NOT NULL,
-        account_type VARCHAR(3) NOT NULL DEFAULT '002',
-        verified TINYINT(1) NOT NULL
+        account_type VARCHAR(3) NOT NULL DEFAULT '222',
+        verified TINYINT(1) NOT NULL,
+        firstname VARCHAR(50),
+        lastname VARCHAR(150),
+        email VARCHAR(250),
+        phone VARCHAR(9),
+        address VARCHAR(200),
+        codezip VARCHAR(6),
+        city VARCHAR(50),
+        country VARCHAR(50),
+        PRIMARY KEY (accountid)
     )";
-    
     $pdo->exec($createAccountsTable);
 
     // Tabela auctions
     $createAuctionTable = "CREATE TABLE IF NOT EXISTS auctions (
-        auctionid INT NOT NULL,
+        auctionid INT NOT NULL AUTO_INCREMENT,
         accountid INT NOT NULL,
         categoryid INT NOT NULL,
         title VARCHAR(100),
@@ -73,7 +80,7 @@ try {
 
     // Tabela category
     $createCategoryTable = "CREATE TABLE IF NOT EXISTS category (
-        categoryid INT NOT NULL,
+        categoryid INT NOT NULL AUTO_INCREMENT,
         name INT NOT NULL,
         in_tree INT,
         PRIMARY KEY (categoryid)
@@ -82,7 +89,7 @@ try {
 
     // Tabela file_to_auction
     $createFileToAuctionTable = "CREATE TABLE IF NOT EXISTS file_to_auction (
-        fileid INT NOT NULL,
+        fileid INT NOT NULL AUTO_INCREMENT,
         auctionid INT NOT NULL,
         link VARCHAR(200) NOT NULL,
         PRIMARY KEY (fileid)
@@ -91,7 +98,7 @@ try {
 
     // Tabela message
     $createMessageTable = "CREATE TABLE IF NOT EXISTS message (
-        id INT NOT NULL,
+        id INT NOT NULL AUTO_INCREMENT,
         mlid INT NOT NULL,
         date DATE DEFAULT CURRENT_TIMESTAMP NOT NULL,
         description TEXT,
@@ -101,28 +108,13 @@ try {
 
     // Tabela message_link
     $createMessageLinkTable = "CREATE TABLE IF NOT EXISTS message_link (
-        mlid INT NOT NULL,
+        mlid INT NOT NULL AUTO_INCREMENT,
         sellerid INT NOT NULL,
         buyerid INT NOT NULL,
         auctionid INT NOT NULL,
         PRIMARY KEY (mlid)
     )";
     $pdo->exec($createMessageLinkTable);
-
-    // Tabela users
-    $createUsersTable = "CREATE TABLE IF NOT EXISTS users (
-        userid INT NOT NULL,
-        firstname VARCHAR(50),
-        lastname VARCHAR(150),
-        email VARCHAR(250),
-        phone VARCHAR(9),
-        address VARCHAR(200),
-        codezip VARCHAR(6),
-        city VARCHAR(50),
-        country VARCHAR(50),
-        PRIMARY KEY (userid)
-    )";
-    $pdo->exec($createUsersTable);
 
     echo "Baza danych została utworzona pomyślnie.";
 } catch (PDOException $e) {

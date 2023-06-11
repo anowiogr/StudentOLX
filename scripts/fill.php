@@ -83,7 +83,7 @@ try {
     // Dodanie konta Geralta
     $dbh->exec("
         INSERT INTO accounts (accountid, userid, login, password, account_type, verified)
-        VALUES (2, 2, 'geralt', 'password123', 010, 1)
+        VALUES (2, 2, 'geralt', 'password123', 191, 1)
     ");
 
     // Dodanie aukcji na usługi Geralta
@@ -141,7 +141,7 @@ $dbh->exec("
 // Dodanie konta Frodo
 $dbh->exec("
     INSERT INTO accounts (accountid, userid, login, password, account_type, verified)
-    VALUES (3, 3, 'frodo', 'password123', 002, 1)
+    VALUES (3, 3, 'frodo', 'password123', 222, 1)
 ");
 
 // Dodanie aukcji na usługi Frodo
@@ -201,7 +201,7 @@ $dbh->exec("
 // Dodanie konta Ciri
 $dbh->exec("
     INSERT INTO accounts (accountid, userid, login, password, account_type, verified)
-    VALUES (4, 4, 'ciri', 'password123', 002, 1)
+    VALUES (4, 4, 'ciri', 'password123', 222, 1)
 ");
 
 // Dodanie aukcji na usługi Ciri
