@@ -1,23 +1,23 @@
 <?php
   session_start();
+  //print_r($_SESSION["logged"]);
+  //print_r(session_status());
   if (!isset($_SESSION["logged"]) || session_status() != 2){
     //print_r($_SESSION["logged"]);
-    header("location: ./");
+    header("location: index.php");
   }else{
-    switch ($_SESSION["logged"]["role_id"]){
+    switch ($_SESSION["logged"]["id_r"]){
       case 1:
-	      $role = "logged_user";
+	      $role = "admin";
         break;
 	    case 2:
-		    $role = "logged_moderator";
-		    break;
-	    case 3:
-		    $role = "logged_admin";
+		    $role = "user";
 		    break;
     }
+    header("location: index.php");
   }
 
-if (isset($_SESSION["logged"]["last_activity"])){
+if (isset($_SESSION["logged"]["last_activity"])) {
   $lastActivityTime = $_SESSION["logged"]["last_activity"];
   //echo $lastActivityTime;
   $currentTime = time();
@@ -30,7 +30,8 @@ if (isset($_SESSION["logged"]["last_activity"])){
   }else{
     //echo "Sesja nieaktywna";
     $_SESSION["error"] = "Sesja zakończona, zaloguj się ponownie";
-    header("location: ./");
+    header("location: index.php");
+    $role = "guest";
   }
 
   //exit();

@@ -1,3 +1,11 @@
+<?php
+if (!isset($_SESSION["logged"]) || session_status() != 2){
+$role = "guest";
+}else{
+    print_r($role);
+}
+//print_r($role);
+?>
 <!doctype html>
 <html class="h-100">
 <head>
@@ -26,7 +34,10 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
+        <?php
+            if($role=="guest"){
+                ?>
+                <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
 
             <ul class="navbar-nav">
                 <br />
@@ -42,5 +53,10 @@
             </ul>
 
         </div>
+
+        <?php
+            }
+        ?>
+
     </div>
 </nav>

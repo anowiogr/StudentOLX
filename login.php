@@ -53,7 +53,7 @@ ERROR;
       <a href="./" class="h1"><b>Studencki</b>OLX</a>
     </div>
     <div class="card-body">
-      <form action="../scripts/login.php" method="post">
+      <form action="scripts/login.php" method="post">
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="Podaj email" name="email">
           <div class="input-group-append">
