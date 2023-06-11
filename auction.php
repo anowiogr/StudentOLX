@@ -1,4 +1,5 @@
 <?php
+include_once "constant/header.php"
 require 'scripts/connect.php';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
@@ -62,4 +63,5 @@ try {
 } catch (PDOException $e) {
     die("Błąd połączenia lub tworzenia bazy danych: " . $e->getMessage());
 }
+require 'constant/footer.php';
 ?>

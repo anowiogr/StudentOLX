@@ -1,4 +1,5 @@
 <?php
+include_once "constant/header.php"
 require 'scripts/connect.php';
 
 try {
@@ -54,4 +55,5 @@ echo "<label for='user_id'>ID użytkownika:</label>";
 echo "<input type='text' name='user_id' id='user_id' value='" . $userId . "' required>";
 echo "<button type='submit'>Zatwierdź</button>";
 echo "</form>";
+require 'constant/footer.php';
 ?>
