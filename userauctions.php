@@ -23,7 +23,7 @@ try {
         if ($auctions) {
             echo "<h2>Aukcje użytkownika o ID: " . $userId . "</h2>";
             echo "<table>";
-            echo "<tr><th>ID aukcji</th><th>Tytuł</th><th>Data rozpoczęcia</th><th>Data zakończenia</th><th>Sprzedane</th></tr>";
+            echo "<tr><th>ID aukcji</th><th>Tytuł</th><th>Data rozpoczęcia</th><th>Data zakończenia</th><th>Sprzedane</th><th>Akcje</th></tr>";
             foreach ($auctions as $auction) {
                 echo "<tr>";
                 echo "<td>" . $auction['auctionid'] . "</td>";
@@ -31,6 +31,10 @@ try {
                 echo "<td>" . $auction['date_start'] . "</td>";
                 echo "<td>" . $auction['date_end'] . "</td>";
                 echo "<td>" . ($auction['selled'] ? 'Tak' : 'Nie') . "</td>";
+                echo "<td><form method='POST' action='auction.php'>";
+                echo "<input type='hidden' name='auction_id' value='" . $auction['auctionid'] . "'>";
+                echo "<button type='submit'>Pokaż szczegóły</button>";
+                echo "</form></td>";
                 echo "</tr>";
             }
             echo "</table>";
@@ -38,15 +42,16 @@ try {
             echo "<p class='info'>Brak aukcji dla użytkownika o podanym ID.</p>";
         }
     } else {
-        
+
     }
 } catch (PDOException $e) {
     echo "Błąd połączenia: " . $e->getMessage();
 }
+
 echo "<p class='info'>Wpisz ID użytkownika, aby wyświetlić jego aukcje.</p>";
-        echo "<form method='POST' action=''>";
-        echo "<label for='user_id'>ID użytkownika:</label>";
-        echo "<input type='text' name='user_id' id='user_id' value='" . $userId . "' required>";
-        echo "<button type='submit'>Zatwierdź</button>";
-        echo "</form>";
+echo "<form method='POST' action=''>";
+echo "<label for='user_id'>ID użytkownika:</label>";
+echo "<input type='text' name='user_id' id='user_id' value='" . $userId . "' required>";
+echo "<button type='submit'>Zatwierdź</button>";
+echo "</form>";
 ?>
