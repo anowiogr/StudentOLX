@@ -15,6 +15,7 @@
           $_SESSION["role"] = "user";
 		    break;
     }
+
     header("location: index.php");
   }
 

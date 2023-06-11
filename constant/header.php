@@ -1,7 +1,7 @@
 <?php
 
     session_start();
-
+    //print_r($_SESSION["logged"]);
     if (!isset($_SESSION["role"])){
         $_SESSION["role"]="guest";
     }
@@ -104,8 +104,3 @@
     </div>
 </nav>
 
-<?php
-
-print_r($_SESSION["role"]);
-
-?>

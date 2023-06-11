@@ -32,10 +32,10 @@ try {
 		//print_r($user);
         //print_r($pass);
 		if (password_verify($_POST["pass"], $user["password"])){
-			$_SESSION["logged"]["firstName"] = $user["firstName"];
-			$_SESSION["logged"]["lastName"] = $user["lastName"];
+			$_SESSION["logged"]["firstName"] = $user["firstname"];
+			$_SESSION["logged"]["lastName"] = $user["lastname"];
 			$_SESSION["logged"]["session_id"] = session_id();
-			//echo $_SESSION["logged"]["session_id"];
+			$_SESSION["logged"]["account_id"]= $user["accountid"];
 			//echo  session_status();
 			$_SESSION["logged"]["account_type"] = $user["account_type"];
 			$_SESSION["logged"]["last_activity"] = time();
