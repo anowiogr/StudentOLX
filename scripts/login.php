@@ -10,10 +10,10 @@ foreach ($_POST as $value){
 	}
 }
 
-require_once "./connect.php";
+require_once "connect.php";
 
 try {
-	$stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+	$stmt = $conn->prepare("SELECT * FROM `accounts` WHERE email=?");
 	$stmt->bind_param("s", $_POST["email"]);
 	$stmt->execute();
 
@@ -21,22 +21,26 @@ try {
 	//echo $result->num_rows;
 
 	if ($result->num_rows != 0){
-		//$_SESSION["success"] = "Prawidłowo zalo użytkownika $_POST[firstName] $_POST[lastName]";
+		//$_SESSION["success"] = "Prawidłowo zalo użytkownika ";
 		// "email istnieje";
 
 		$user = $result->fetch_assoc();
 		$stmt->close();
+
+        $pass = password_hash($_POST["pass"], PASSWORD_ARGON2ID);
+
 		//print_r($user);
+        //print_r($pass);
 		if (password_verify($_POST["pass"], $user["password"])){
-			$_SESSION["logged"]["firstName"] = $user["firstName"];
-			$_SESSION["logged"]["lastName"] = $user["lastName"];
+			$_SESSION["logged"]["firstName"] = $user["firstname"];
+			$_SESSION["logged"]["lastName"] = $user["lastname"];
 			$_SESSION["logged"]["session_id"] = session_id();
-			//echo $_SESSION["logged"]["session_id"];
+			$_SESSION["logged"]["account_id"]= $user["accountid"];
 			//echo  session_status();
-			$_SESSION["logged"]["role_id"] = $user["role_id"];
+			$_SESSION["logged"]["account_type"] = $user["account_type"];
 			$_SESSION["logged"]["last_activity"] = time();
 			//print_r($_SESSION["logged"]);
-			header("location: ../pages/logged.php");
+			header("location: ../logged.php");
 		}else{
 			$_SESSION["error"] = "Nie udało się zalogować!";
 			echo "<script>history.back();</script>";

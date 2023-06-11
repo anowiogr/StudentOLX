@@ -1,5 +1,5 @@
 	<?php
-		include_once "constant/header.php"
+	include_once "constant/header.php";
 	?>
 
 	<body class="d-flex flex-column h-100">
@@ -22,5 +22,5 @@
 	</body>
 
 	<?php
-		include_once "constant/footer.php"
+	include_once "constant/footer.php";
 	?>

@@ -1,5 +1,5 @@
 <?php
-include_once "constant/header.php"
+include_once "constant/header.php";
 ?>
 
 
@@ -14,5 +14,5 @@ include_once "constant/header.php"
 	</body>
 
 <?php
-include_once "constant/footer.php"
+include_once "constant/footer.php";
 ?>

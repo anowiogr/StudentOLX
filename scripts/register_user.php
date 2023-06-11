@@ -1,8 +1,5 @@
 <?php
 session_start();
-//	echo "<pre>";
-//		print_r($_POST);
-//	echo "</pre>";
 
 foreach ($_POST as $value){
 	if (empty($value)){
@@ -11,6 +8,7 @@ foreach ($_POST as $value){
 		exit();
 	}
 }
+require_once "connect.php";
 
 $error = 0;
 if (!isset($_POST["terms"])){
@@ -28,25 +26,33 @@ if ($_POST["email1"] != $_POST["email2"]){
 	$_SESSION["error"] = "Adresy email są różne!";
 }
 
+    $stmt = $conn->query("SELECT * FROM `accounts` WHERE `login` = ?");
+    $stmt->bind_param($_POST["nick"]);
+    $stmt->execute();
+    //echo $stmt -> num_rows;
+    if($stmt -> num_rows > 0){
+        $error = 1;
+        $_SESSION["error"] = "Podany nick istnieje już w bazie";
+
+    }
+    $stmt-> close();
+
 if ($error != 0){
 	echo "<script>history.back();</script>";
 	exit();
 }
 
-require_once "./connect.php";
-
 try {
-	$stmt = $conn->prepare("INSERT INTO `users` (`city_id`, `email`, `firstName`, `lastName`, `birthday`, `password`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, current_timestamp());");
 
-	$pass = password_hash($_POST["pass1"], PASSWORD_ARGON2ID);
-
-	$stmt->bind_param("isssss", $_POST["city_id"], $_POST["email1"], $_POST["firstName"], $_POST["lastName"], $_POST["birthday"], $pass);
-
-	$stmt->execute();
+    //Insert do tabeli
+    $stmt = $conn -> prepare("INSERT INTO `accounts` (`firstname`, `lastname`, `email`,`login`, `password`, `verified`) VALUES (?, ?, ?, ?,?, 0 );");
+    $pass = password_hash($_POST["pass1"], PASSWORD_ARGON2ID);
+    $stmt->bind_param("sssss",  $_POST["firstName"], $_POST["lastName"], $_POST["email1"],$_POST["nick"], $pass );
+    $stmt->execute();
 
 	if ($stmt->affected_rows != 0){
-		$_SESSION["success"] = "Prawidłowo dodano użytkownika $_POST[firstName] $_POST[lastName]";
-		header("location: ../pages");
+		$_SESSION["success"] = "Prawidłowo dodano użytkownika";
+		header("location: ../");
 	}
 } catch (mysqli_sql_exception $e) {
 		$_SESSION["error"] = $e->getMessage();

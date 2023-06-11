@@ -42,9 +42,18 @@ ERROR;
       <a href="./index.php" class="h1"><b>Studencki</b>OLX</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Register a new membership</p>
+      <p class="login-box-msg">Zarejestruj konto na platformie</p>
 
-      <form action="../scripts/register_user.php" method="post">
+      <form action="scripts/register_user.php" method="post">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Podaj nick" name="nick">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Podaj imię" name="firstName">
           <div class="input-group-append">

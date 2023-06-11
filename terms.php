@@ -1,5 +1,5 @@
 <?php
-include_once "constant/header.php"
+include_once "constant/header.php";
 ?>
 
 
@@ -398,5 +398,5 @@ Załączniki do niniejszego Regulaminu stanowią jego integralną część.
 </body>
 
 <?php
-include_once "constant/footer.php"
+include_once "constant/footer.php";
 ?>
