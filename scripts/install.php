@@ -37,9 +37,9 @@ try {
     // Wstawianie danych do tabeli type
     $insertTypes = "INSERT INTO type (type_id, type_name)
                     VALUES
-                        ('002', 'user'),
+                        ('222', 'user'),
                         ('101', 'mod'),
-                        ('010', 'admin')";
+                        ('191', 'admin')";
     $pdo->exec($insertTypes);
 
     // Tabela accounts
