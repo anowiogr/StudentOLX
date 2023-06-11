@@ -45,7 +45,7 @@ try {
     // Tabela accounts
     $createAccountsTable = "CREATE TABLE IF NOT EXISTS accounts (
         accountid INT NOT NULL AUTO_INCREMENT,
-        userid INT NOT NULL AUTO_INCREMENT,
+        userid INT NOT NULL UNIQUE,
         login VARCHAR(100) NOT NULL,
         password VARCHAR(50) NOT NULL,
         account_type VARCHAR(3) NOT NULL DEFAULT '222',
@@ -112,7 +112,7 @@ try {
 
     // Tabela users
     $createUsersTable = "CREATE TABLE IF NOT EXISTS users (
-        userid INT NOT NULL,
+        userid INT NOT NULL AUTO_INCREMENT,
         firstname VARCHAR(50),
         lastname VARCHAR(150),
         email VARCHAR(250),
