@@ -49,10 +49,9 @@ try {
         login VARCHAR(100) NOT NULL,
         password VARCHAR(50) NOT NULL,
         account_type VARCHAR(3) NOT NULL DEFAULT '002',
-        verified TINYINT(1) NOT NULL,
-        PRIMARY KEY (accountid),
-        FOREIGN KEY (account_type) REFERENCES type (type_id)
+        verified TINYINT(1) NOT NULL
     )";
+    
     $pdo->exec($createAccountsTable);
 
     // Tabela auctions
