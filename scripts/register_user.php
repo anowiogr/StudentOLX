@@ -43,23 +43,10 @@ if ($error != 0){
 
 try {
 
-    //Insert do tabeli users
-    $stmt = $conn->prepare("INSERT INTO `users` (`firstname`, `lastname`, `email`) VALUES ( ?, ?, ? );");
-    $stmt->bind_param("sss",  $_POST["firstName"], $_POST["lastName"], $_POST["email1"] );
-    $stmt->execute();
-    $stmt->close();
-
-    //Wykonanie nadania id
-    $stmt = $conn->query("SELECT max(userid) as id FROM `users`;");
-    while($row = $stmt -> fetch_assoc()){
-        $id = $row["id"];
-    }
-    $stmt -> close();
-
-    //Insert do tabeli accounts
-    $stmt = $conn -> prepare("INSERT INTO `accounts` (`userid`,`login`, `password`, `verified`) VALUES (?, ?, ?, 0 );");
+    //Insert do tabeli
+    $stmt = $conn -> prepare("INSERT INTO `accounts` (`firstname`, `lastname`, `email`,`login`, `password`, `verified`) VALUES (?, ?, ?, ?,?, 0 );");
     $pass = password_hash($_POST["pass1"], PASSWORD_ARGON2ID);
-    $stmt->bind_param("sss",  $id,$_POST["nick"], $pass );
+    $stmt->bind_param("sssss",  $_POST["firstName"], $_POST["lastName"], $_POST["email1"],$_POST["nick"], $pass );
     $stmt->execute();
 
 	if ($stmt->affected_rows != 0){
