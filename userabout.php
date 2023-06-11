@@ -2,11 +2,19 @@
 require 'constant/header.php';
 require 'scripts/connect.php';
 
+// Sprawdzenie, czy użytkownik jest zalogowany
+session_start();
+
+if (!isset($_SESSION['logged'])) {
+    header("Location: login.php");
+    exit();
+}
+
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $accountId = isset($_POST['account_id']) ? $_POST['account_id'] : '';
+    $accountId = isset($_POST['account_id']) ? $_POST['account_id'] : $_SESSION['logged']['account_id'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Pobranie istniejących informacji o użytkowniku
@@ -118,6 +126,6 @@ try {
     <input type="text" name="account_id" id="account_id" required>
     <button type="submit">Szukaj</button>
 </form>
-<?
+<?php
 require 'constant/footer.php';
 ?>
