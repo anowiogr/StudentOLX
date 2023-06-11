@@ -111,6 +111,14 @@ try {
 } catch (PDOException $e) {
     echo "Błąd połączenia: " . $e->getMessage();
 }
+?>
 
+<h2>Wyszukaj użytkownika</h2>
+<form method="POST" action="">
+    <label for="user_id">ID użytkownika:</label>
+    <input type="text" name="user_id" id="user_id" required>
+    <button type="submit">Szukaj</button>
+</form>
+<?
 require 'constant/footer.php';
 ?>
