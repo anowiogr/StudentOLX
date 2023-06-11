@@ -6,23 +6,22 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $userId = isset($_POST['user_id']) ? $_POST['user_id'] : '';
+    $accountId = isset($_POST['account_id']) ? $_POST['account_id'] : '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Pobranie wszystkich aukcji użytkownika
-        $query = "SELECT auctions.*, users.userid
+        $query = "SELECT auctions.*, accounts.accountid
                   FROM auctions
                   INNER JOIN accounts ON auctions.accountid = accounts.accountid
-                  INNER JOIN users ON accounts.userid = users.userid
-                  WHERE users.userid = :userid";
+                  WHERE accounts.accountid = :accountid";
         $statement = $pdo->prepare($query);
-        $statement->bindParam(':userid', $userId);
+        $statement->bindParam(':accountid', $accountId);
         $statement->execute();
 
         $auctions = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         if ($auctions) {
-            echo "<h2>Aukcje użytkownika o ID: " . $userId . "</h2>";
+            echo "<h2>Aukcje użytkownika o ID konta: " . $accountId . "</h2>";
             echo "<table>";
             echo "<tr><th>ID aukcji</th><th>Tytuł</th><th>Data rozpoczęcia</th><th>Data zakończenia</th><th>Sprzedane</th><th>Akcje</th></tr>";
             foreach ($auctions as $auction) {
@@ -40,7 +39,7 @@ try {
             }
             echo "</table>";
         } else {
-            echo "<p class='info'>Brak aukcji dla użytkownika o podanym ID.</p>";
+            echo "<p class='info'>Brak aukcji dla użytkownika o podanym ID konta.</p>";
         }
     } else {
 
@@ -49,10 +48,10 @@ try {
     echo "Błąd połączenia: " . $e->getMessage();
 }
 
-echo "<p class='info'>Wpisz ID użytkownika, aby wyświetlić jego aukcje.</p>";
+echo "<p class='info'>Wpisz ID konta, aby wyświetlić jego aukcje.</p>";
 echo "<form method='POST' action=''>";
-echo "<label for='user_id'>ID użytkownika:</label>";
-echo "<input type='text' name='user_id' id='user_id' value='" . $userId . "' required>";
+echo "<label for='account_id'>ID konta:</label>";
+echo "<input type='text' name='account_id' id='account_id' value='" . $accountId . "' required>";
 echo "<button type='submit'>Zatwierdź</button>";
 echo "</form>";
 require 'constant/footer.php';

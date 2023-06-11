@@ -6,17 +6,16 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $userId = isset($_POST['user_id']) ? $_POST['user_id'] : '';
+    $accountId = isset($_POST['account_id']) ? $_POST['account_id'] : '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Pobranie istniejących informacji o użytkowniku
-        $query = "SELECT accounts.*, type.type_name, users.*
+        $query = "SELECT accounts.*, type.type_name
                   FROM accounts
                   LEFT JOIN type ON accounts.account_type = type.type_id
-                  LEFT JOIN users ON accounts.userid = users.userid
-                  WHERE accounts.userid = :userid";
+                  WHERE accounts.accountid = :accountid";
         $statement = $pdo->prepare($query);
-        $statement->bindParam(':userid', $userId);
+        $statement->bindParam(':accountid', $accountId);
         $statement->execute();
 
         $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -47,7 +46,7 @@ try {
             echo "<input type='text' name='city' id='city' value='" . $user['city'] . "' maxlength='50' placeholder='Max 50 znaków' required><br>";
             echo "<label for='country'>Kraj:</label>";
             echo "<input type='text' name='country' id='country' value='" . $user['country'] . "' maxlength='50' placeholder='Max 50 znaków' required><br>";
-            echo "<input type='hidden' name='user_id' value='" . $userId . "'>";
+            echo "<input type='hidden' name='account_id' value='" . $accountId . "'>";
             echo "<button type='submit'>Zapisz zmiany</button>";
             echo "</form>";
 
@@ -62,7 +61,7 @@ try {
                 $city = $_POST['city'];
                 $country = $_POST['country'];
 
-                $updateQuery = "UPDATE users
+                $updateQuery = "UPDATE accounts
                                 SET firstname = :firstname,
                                     lastname = :lastname,
                                     email = :email,
@@ -71,7 +70,7 @@ try {
                                     codezip = :codezip,
                                     city = :city,
                                     country = :country
-                                WHERE userid = :userid";
+                                WHERE accountid = :accountid";
 
                 $updateStatement = $pdo->prepare($updateQuery);
                 $updateStatement->bindParam(':firstname', $firstname);
@@ -82,7 +81,7 @@ try {
                 $updateStatement->bindParam(':codezip', $codezip);
                 $updateStatement->bindParam(':city', $city);
                 $updateStatement->bindParam(':country', $country);
-                $updateStatement->bindParam(':userid', $userId);
+                $updateStatement->bindParam(':accountid', $accountId);
 
                 $errorMessage = '';
 
@@ -103,8 +102,8 @@ try {
     } else {
         echo "<p class='info'>Wpisz ID użytkownika, aby zmienić dane.</p>";
         echo "<form method='POST' action=''>";
-        echo "<label for='user_id'>ID użytkownika:</label>";
-        echo "<input type='text' name='user_id' id='user_id' value='" . $userId . "' required>";
+        echo "<label for='account_id'>ID użytkownika:</label>";
+        echo "<input type='text' name='account_id' id='account_id' value='" . $accountId . "' required>";
         echo "<button type='submit'>Zatwierdź</button>";
         echo "</form>";
     }
@@ -115,8 +114,8 @@ try {
 
 <h2>Wyszukaj użytkownika</h2>
 <form method="POST" action="">
-    <label for="user_id">ID użytkownika:</label>
-    <input type="text" name="user_id" id="user_id" required>
+    <label for="account_id">ID użytkownika:</label>
+    <input type="text" name="account_id" id="account_id" required>
     <button type="submit">Szukaj</button>
 </form>
 <?

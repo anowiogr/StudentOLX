@@ -11,7 +11,7 @@ try {
 
         // Pobranie informacji o wybranej aukcji
         $query = "SELECT a.*, u.firstname, u.lastname FROM auctions a
-                  INNER JOIN users u ON a.accountid = u.userid
+                  INNER JOIN accounts u ON a.accountid = u.accountid
                   WHERE a.auctionid = :auctionId";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':auctionId', $auctionId, PDO::PARAM_INT);
@@ -42,7 +42,7 @@ try {
     } else {
         // Pobranie wszystkich aukcji z podstawowymi informacjami
         $query = "SELECT a.auctionid, a.title, a.selled, u.firstname, u.lastname FROM auctions a
-                  INNER JOIN users u ON a.accountid = u.userid";
+                  INNER JOIN accounts u ON a.accountid = u.accountid";
         $stmt = $pdo->query($query);
         $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

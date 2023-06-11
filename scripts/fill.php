@@ -1,256 +1,154 @@
 <?php
-require_once 'connect.php';
+require 'connect.php';
 
 try {
-    // Połączenie z bazą danych
-    $dbh = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Usunięcie istniejących danych z tabel
-    $tables = ['message_link', 'message', 'auctions', 'accounts', 'users'];
-    foreach ($tables as $table) {
-        $dbh->exec("DELETE FROM $table");
-    }
+    // Usuwanie istniejącej bazy danych
+    $dropDatabase = "DROP DATABASE IF EXISTS $dbname";
+    $pdo->exec($dropDatabase);
 
-    // Dodanie postaci ze świata LOTR
-    $dbh->beginTransaction();
+    // Tworzenie nowej bazy danych
+    $createDatabase = "CREATE DATABASE $dbname";
+    $pdo->exec($createDatabase);
+    $pdo->exec("USE $dbname");
 
-    // Dodanie użytkownika Aragorn
-    $dbh->exec("
-        INSERT INTO users (userid, firstname, lastname, email, phone, address, codezip, city, country)
-        VALUES (1, 'Aragorn', 'Elessar', 'aragorn@example.com', '123456789', 'Middle-earth', '12345', 'Minas Tirith', 'Gondor')
-    ");
+    // Tworzenie tabeli type
+    $createTypeTable = "CREATE TABLE IF NOT EXISTS type (
+        type_id VARCHAR(3) NOT NULL PRIMARY KEY,
+        type_name VARCHAR(20) NOT NULL
+    )";
+    $pdo->exec($createTypeTable);
 
-    // Dodanie konta Aragorna
-    $dbh->exec("
-        INSERT INTO accounts (accountid, userid, login, password, account_type, verified)
-        VALUES (1, 1, 'aragorn', 'password123', 101, 1)
-    ");
+    // Wstawianie danych do tabeli type
+    $insertTypes = "INSERT INTO type (type_id, type_name)
+                    VALUES
+                        ('222', 'user'),
+                        ('101', 'mod'),
+                        ('191', 'admin')";
+    $pdo->exec($insertTypes);
 
-    // Dodanie aukcji na usługi Aragorna
-    $dbh->exec("
-        INSERT INTO auctions (auctionid, accountid, categoryid, title, description, used, private, date_start, date_end, selled)
-        VALUES (1, 1, 1, 'Przywrócenie królestwa Gondoru', 'Oferuję swoje umiejętności przywódcze w celu odzyskania Gondoru.', 0, 0, '2023-06-10', '2023-06-20', 0)
-    ");
+    // Tworzenie tabeli accounts
+    $createAccountsTable = "CREATE TABLE IF NOT EXISTS accounts (
+        accountid INT NOT NULL AUTO_INCREMENT,
+        login VARCHAR(100) NOT NULL,
+        password VARCHAR(50) NOT NULL,
+        account_type VARCHAR(3) NOT NULL DEFAULT '222',
+        verified TINYINT(1) NOT NULL,
+        firstname VARCHAR(50),
+        lastname VARCHAR(150),
+        email VARCHAR(250),
+        phone VARCHAR(9),
+        address VARCHAR(200),
+        codezip VARCHAR(6),
+        city VARCHAR(50),
+        country VARCHAR(50),
+        PRIMARY KEY (accountid)
+    )";
+    $pdo->exec($createAccountsTable);
 
-    // Dodanie aukcji na sprzedaż Aragorna
-    $dbh->exec("
-        INSERT INTO auctions (auctionid, accountid, categoryid, title, description, used, private, date_start, date_end, selled)
-        VALUES (2, 1, 2, 'Miecz Narsil', 'Sprzedaję legendarny miecz Narsil, którym pokonałem Saurona.', 1, 1, '2023-06-10', '2023-06-15', 0)
-    ");
+    // Tworzenie tabeli auctions
+    $createAuctionTable = "CREATE TABLE IF NOT EXISTS auctions (
+        auctionid INT NOT NULL AUTO_INCREMENT,
+        accountid INT NOT NULL,
+        categoryid INT NOT NULL,
+        title VARCHAR(100),
+        description TEXT,
+        used TINYINT(1),
+        private TINYINT(1),
+        date_start DATE,
+        date_end DATE,
+        selled TINYINT(1),
+        buyerid INT,
+        PRIMARY KEY (auctionid)
+    )";
+    $pdo->exec($createAuctionTable);
 
-    // Dodanie konwersacji Aragorna z innymi postaciami
-    $dbh->exec("
-        INSERT INTO message_link (mlid, sellerid, buyerid, auctionid)
-        VALUES (1, 1, 3, 1)
-    ");
+    // Tworzenie tabeli category
+    $createCategoryTable = "CREATE TABLE IF NOT EXISTS category (
+        categoryid INT NOT NULL AUTO_INCREMENT,
+        name INT NOT NULL,
+        in_tree INT,
+        PRIMARY KEY (categoryid)
+    )";
+    $pdo->exec($createCategoryTable);
 
-    $dbh->exec("
-        INSERT INTO message_link (mlid, sellerid, buyerid, auctionid)
-        VALUES (2, 1, 4, 2)
-    ");
+    // Tworzenie tabeli file_to_auction
+    $createFileToAuctionTable = "CREATE TABLE IF NOT EXISTS file_to_auction (
+        file_id INT(11) NOT NULL AUTO_INCREMENT,
+        auction_id INT(11) NOT NULL,
+        filename VARCHAR(255) NOT NULL,
+        file_path VARCHAR(255) NOT NULL,
+        PRIMARY KEY (file_id),
+        FOREIGN KEY (auction_id) REFERENCES auctions(auctionid) ON DELETE CASCADE
+    )";
+    $pdo->exec($createFileToAuctionTable);
 
-    $dbh->exec("
-        INSERT INTO message (id, mlid, date, description)
-        VALUES (1, 1, '2023-06-10 10:30:00', 'Czy oferta dotyczy również transportu?')
-    ");
+    // Tworzenie tabeli message
+    $createMessageTable = "CREATE TABLE IF NOT EXISTS message (
+        id INT NOT NULL AUTO_INCREMENT,
+        mlid INT NOT NULL,
+        date DATE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        description TEXT,
+        PRIMARY KEY (id)
+    )";
+    $pdo->exec($createMessageTable);
 
-    $dbh->exec("
-        INSERT INTO message (id, mlid, date, description)
-        VALUES (2, 1, '2023-06-10 11:15:00', 'Tak, transport jest wliczony w cenę.')
-    ");
+    // Tworzenie tabeli message_link
+    $createMessageLinkTable = "CREATE TABLE IF NOT EXISTS message_link (
+        mlid INT NOT NULL AUTO_INCREMENT,
+        sellerid INT NOT NULL,
+        buyerid INT NOT NULL,
+        auctionid INT NOT NULL,
+        PRIMARY KEY (mlid),
+        FOREIGN KEY (sellerid) REFERENCES accounts(accountid),
+        FOREIGN KEY (buyerid) REFERENCES accounts(accountid),
+        FOREIGN KEY (auctionid) REFERENCES auctions(auctionid) ON DELETE CASCADE
+    )";
+    $pdo->exec($createMessageLinkTable);
 
-    $dbh->exec("
-        INSERT INTO message (id, mlid, date, description)
-        VALUES (3, 2, '2023-06-12 14:20:00', 'Czy miecz posiada jakiś certyfikat autentyczności?')
-    ");
+    // Wstawianie danych do tabeli accounts
+    $insertAccounts = "INSERT INTO accounts (login, password, account_type, verified, firstname, lastname, email, phone, address, codezip, city, country)
+                    VALUES
+                        ('Gandalf', 'password1', '101', 1, 'Gandalf', 'Szary', 'gandalf@example.com', '123456789', 'Mroczna Dolina 1', '12-345', 'Minas Tirith', 'Gondor'),
+                        ('Frodo', 'password2', '222', 1, 'Frodo', 'Baggins', 'frodo@example.com', '987654321', 'Hobbiton 2', '98-765', 'Shire', 'Middle-earth'),
+                        ('Yennefer', 'password3', '222', 1, 'Yennefer', 'z Vengerbergu', 'yennefer@example.com', '555555555', 'Wyzima 3', '54-321', 'Redania', 'Księstwo Redanii'),
+                        ('Geralt', 'password4', '222', 1, 'Geralt', 'z Rivii', 'geralt@example.com', '777777777', 'Kaer Morhen 4', '01-234', 'Temeria', 'Królestwo Temerii')";
+    $pdo->exec($insertAccounts);
 
-    $dbh->exec("
-        INSERT INTO message (id, mlid, date, description)
-        VALUES (4, 2, '2023-06-12 15:45:00', 'Tak, miecz posiada certyfikat autentyczności od elfów z Rivendell.')
-    ");
+    // Wstawianie danych do tabeli auctions
+    $insertAuctions = "INSERT INTO auctions (accountid, categoryid, title, description, used, private, date_start, date_end, selled, buyerid)
+                    VALUES
+                        (1, 1, 'Miecz Glamdring', 'Potężny miecz używany przez Gandalfa w walce ze złem.', 0, 0, '2023-06-01', '2023-06-10', 0, NULL),
+                        (2, 2, 'Jeden Pierścień', 'Tajemniczy pierścień o ogromnej mocy.', 1, 0, '2023-06-02', '2023-06-11', 0, NULL),
+                        (3, 3, 'Amulet Yennefer', 'Magiczny amulet zwiększający moc czarów.', 0, 0, '2023-06-03', '2023-06-12', 0, NULL),
+                        (4, 4, 'Medalion Wiedźmina', 'Tajemniczy medalion dający wiedźminowi nadnaturalne zdolności.', 1, 1, '2023-06-04', '2023-06-13', 0, NULL)";
+    $pdo->exec($insertAuctions);
 
-    $dbh->commit();
+    // Wstawianie danych do tabeli message
+    $insertMessages = "INSERT INTO message (mlid, date, description)
+                    VALUES
+                        (1, '2023-06-06', 'Czy miecz Glamdring nadal jest dostępny?'),
+                        (1, '2023-06-07', 'Tak, miecz Glamdring jest wciąż dostępny. Czy jesteś zainteresowany zakupem?'),
+                        (1, '2023-06-07', 'Tak, jestem zainteresowany. Czy mogę obejrzeć miecz przed zakupem?'),
+                        (1, '2023-06-08', 'Oczywiście, możemy umówić się na spotkanie. Gdzie mogę Cię spotkać?'),
+                        (2, '2023-06-06', 'Czy ten Jeden Pierścień jest oryginalny?'),
+                        (2, '2023-06-07', 'Tak, ten Pierścień jest oryginalny i posiada potężne moce. Czy chcesz go kupić?'),
+                        (2, '2023-06-07', 'Tak, jestem zainteresowany. Czy mogę go przetestować przed zakupem?'),
+                        (2, '2023-06-08', 'Niestety, nie można przetestować tego Pierścienia. Ale mogę zapewnić Cię, że jest w doskonałym stanie.'),
+                        (3, '2023-06-06', 'Czy amulet Yennefer jest nadal dostępny?'),
+                        (3, '2023-06-07', 'Tak, amulet Yennefer jest nadal dostępny. Czy chciałbyś go zakupić?'),
+                        (3, '2023-06-07', 'Tak, jestem zainteresowany. Czy mogę obejrzeć amulet osobiście?'),
+                        (3, '2023-06-08', 'Oczywiście, możemy się spotkać. Gdzie chciałbyś się spotkać?'),
+                        (4, '2023-06-06', 'Czy medalion Wiedźmina jest wciąż dostępny?'),
+                        (4, '2023-06-07', 'Tak, medalion Wiedźmina jest nadal dostępny. Czy jesteś zainteresowany zakupem?'),
+                        (4, '2023-06-07', 'Tak, jestem zainteresowany. Czy mogę obejrzeć medalion przed zakupem?'),
+                        (4, '2023-06-08', 'Oczywiście, możemy umówić się na spotkanie. Gdzie chciałbyś się spotkać?')";
+    $pdo->exec($insertMessages);
 
-    // Dodanie postaci ze świata Wiedźmina
-    $dbh->beginTransaction();
-
-    // Dodanie użytkownika Geralt
-    $dbh->exec("
-        INSERT INTO users (userid, firstname, lastname, email, phone, address, codezip, city, country)
-        VALUES (2, 'Geralt', 'z Rivii', 'geralt@example.com', '987654321', 'Kaer Morhen', '54321', 'Rivia', 'Redania')
-    ");
-
-    // Dodanie konta Geralta
-    $dbh->exec("
-        INSERT INTO accounts (accountid, userid, login, password, account_type, verified)
-        VALUES (2, 2, 'geralt', 'password123', 191, 1)
-    ");
-
-    // Dodanie aukcji na usługi Geralta
-    $dbh->exec("
-        INSERT INTO auctions (auctionid, accountid, categoryid, title, description, used, private, date_start, date_end, selled)
-        VALUES (3, 2, 1, 'Polowanie na potwory', 'Oferuję swoje usługi jako wiedźmin do polowania na potwory.', 0, 0, '2023-06-10', '2023-06-20', 0)
-    ");
-
-    // Dodanie aukcji na sprzedaż Geralta
-    $dbh->exec("
-        INSERT INTO auctions (auctionid, accountid, categoryid, title, description, used, private, date_start, date_end, selled)
-        VALUES (4, 2, 2, 'Miecz srebrny', 'Sprzedaję używany srebrny miecz wiedźmiński.', 1, 1, '2023-06-10', '2023-06-15', 0)
-    ");
-
-    // Dodanie konwersacji Geralta z innymi postaciami
-    $dbh->exec("
-        INSERT INTO message_link (mlid, sellerid, buyerid, auctionid)
-        VALUES (3, 2, 1, 3)
-    ");
-
-    $dbh->exec("
-        INSERT INTO message_link (mlid, sellerid, buyerid, auctionid)
-        VALUES (4, 2, 3, 4)
-    ");
-
-    $dbh->exec("
-        INSERT INTO message (id, mlid, date, description)
-        VALUES (5, 3, '2023-06-10 10:30:00', 'Czy oferujesz także szkolenia dla początkujących wiedźminów?')
-    ");
-
-    $dbh->exec("
-        INSERT INTO message (id, mlid, date, description)
-        VALUES (6, 3, '2023-06-10 11:15:00', 'Tak, prowadzę szkolenia dla początkujących wiedźminów.')
-    ");
-
-    $dbh->exec("
-        INSERT INTO message (id, mlid, date, description)
-        VALUES (7, 4, '2023-06-12 14:20:00', 'Czy miecz posiada jakieś wady?')
-    ");
-
-    $dbh->exec("
-        INSERT INTO message (id, mlid, date, description)
-        VALUES (8, 4, '2023-06-12 15:45:00', 'Miecz jest w doskonałym stanie i nie posiada wad.')
-    ");
-
-    // Dodanie postaci ze świata LOTR
-
-
-// Dodanie użytkownika Frodo
-$dbh->exec("
-    INSERT INTO users (userid, firstname, lastname, email, phone, address, codezip, city, country)
-    VALUES (3, 'Frodo', 'Baggins', 'frodo@example.com', '987654321', 'The Shire', '54321', 'Hobbiton', 'The Shire')
-");
-
-// Dodanie konta Frodo
-$dbh->exec("
-    INSERT INTO accounts (accountid, userid, login, password, account_type, verified)
-    VALUES (3, 3, 'frodo', 'password123', 222, 1)
-");
-
-// Dodanie aukcji na usługi Frodo
-$dbh->exec("
-    INSERT INTO auctions (auctionid, accountid, categoryid, title, description, used, private, date_start, date_end, selled)
-    VALUES (5, 3, 1, 'Przewiezienie Pierścienia', 'Oferuję usługę przewiezienia Pierścienia do Mordoru.', 0, 0, '2023-06-10', '2023-06-20', 0)
-");
-
-// Dodanie aukcji na sprzedaż Frodo
-$dbh->exec("
-    INSERT INTO auctions (auctionid, accountid, categoryid, title, description, used, private, date_start, date_end, selled)
-    VALUES (6, 3, 2, 'Księga Mazarbul', 'Sprzedaję starożytną Księgę Mazarbul znalezioną w Morii.', 1, 1, '2023-06-10', '2023-06-15', 0)
-");
-
-// Dodanie konwersacji Frodo z innymi postaciami
-$dbh->exec("
-    INSERT INTO message_link (mlid, sellerid, buyerid, auctionid)
-    VALUES (5, 3, 1, 5)
-");
-
-$dbh->exec("
-    INSERT INTO message_link (mlid, sellerid, buyerid, auctionid)
-    VALUES (6, 3, 2, 6)
-");
-
-$dbh->exec("
-    INSERT INTO message (id, mlid, date, description)
-    VALUES (9, 5, '2023-06-10 10:30:00', 'Czy oferujesz także usługę eskorty?')
-");
-
-$dbh->exec("
-    INSERT INTO message (id, mlid, date, description)
-    VALUES (10, 5, '2023-06-10 11:15:00', 'Tak, mogę zapewnić eskortę podczas podróży.')
-");
-
-$dbh->exec("
-    INSERT INTO message (id, mlid, date, description)
-    VALUES (11, 6, '2023-06-12 14:20:00', 'Czy Księga Mazarbul jest w pełni czytelna?')
-");
-
-$dbh->exec("
-    INSERT INTO message (id, mlid, date, description)
-    VALUES (12, 6, '2023-06-12 15:45:00', 'Księga Mazarbul jest w dobrym stanie, ale niektóre strony są mocno zniszczone.')
-");
-
-$dbh->commit();
-
-// Dodanie postaci ze świata Wiedźmina
-$dbh->beginTransaction();
-
-// Dodanie użytkownika Ciri
-$dbh->exec("
-    INSERT INTO users (userid, firstname, lastname, email, phone, address, codezip, city, country)
-    VALUES (4, 'Ciri', 'z Cintry', 'ciri@example.com', '123456789', 'Cintra', '12345', 'Cintra', 'Nilfgaard')
-");
-
-// Dodanie konta Ciri
-$dbh->exec("
-    INSERT INTO accounts (accountid, userid, login, password, account_type, verified)
-    VALUES (4, 4, 'ciri', 'password123', 222, 1)
-");
-
-// Dodanie aukcji na usługi Ciri
-$dbh->exec("
-    INSERT INTO auctions (auctionid, accountid, categoryid, title, description, used, private, date_start, date_end, selled)
-    VALUES (7, 4, 1, 'Trening walki', 'Oferuję trening walki z mieczem i magii.', 0, 0, '2023-06-10', '2023-06-20', 0)
-");
-
-// Dodanie aukcji na sprzedaż Ciri
-$dbh->exec("
-    INSERT INTO auctions (auctionid, accountid, categoryid, title, description, used, private, date_start, date_end, selled)
-    VALUES (8, 4, 2, 'Pierścień z Cintry', 'Sprzedaję magiczny pierścień z Cintry.', 1, 1, '2023-06-10', '2023-06-15', 0)
-");
-
-// Dodanie konwersacji Ciri z innymi postaciami
-$dbh->exec("
-    INSERT INTO message_link (mlid, sellerid, buyerid, auctionid)
-    VALUES (7, 4, 2, 7)
-");
-
-$dbh->exec("
-    INSERT INTO message_link (mlid, sellerid, buyerid, auctionid)
-    VALUES (8, 4, 3, 8)
-");
-
-$dbh->exec("
-    INSERT INTO message (id, mlid, date, description)
-    VALUES (13, 7, '2023-06-10 10:30:00', 'Czy oferujesz także szkolenia magiczne?')
-");
-
-$dbh->exec("
-    INSERT INTO message (id, mlid, date, description)
-    VALUES (14, 7, '2023-06-10 11:15:00', 'Tak, prowadzę szkolenia z zaklęć i magii.')
-");
-
-$dbh->exec("
-    INSERT INTO message (id, mlid, date, description)
-    VALUES (15, 8, '2023-06-12 14:20:00', 'Czy pierścień ma jakieś specjalne właściwości?')
-");
-
-$dbh->exec("
-    INSERT INTO message (id, mlid, date, description)
-    VALUES (16, 8, '2023-06-12 15:45:00', 'Pierścień posiada zdolność niewidzialności.')
-");
-
-$dbh->commit();
-
-    echo "Baza danych została zaktualizowana.";
+    echo "Dane zostały pomyślnie wstawione do bazy danych.";
 } catch (PDOException $e) {
-    echo "Wystąpił błąd: " . $e->getMessage();
+    echo "Błąd połączenia lub aktualizacji bazy danych: " . $e->getMessage();
 }
 ?>

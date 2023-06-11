@@ -2,32 +2,19 @@
 require 'connect.php';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $pdo = new PDO("mysql:host=$host", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Usuwanie istniejących tabel
-    $tables = [
-        'accounts',
-        'type',
-        'auctions',
-        'category',
-        'file_to_auction',
-        'message',
-        'message_link',
-        'users'
-    ];
+    // Usuwanie istniejącej bazy danych
+    $dropDatabase = "DROP DATABASE IF EXISTS $dbname";
+    $pdo->exec($dropDatabase);
 
-    foreach ($tables as $table) {
-        $dropTable = "DROP TABLE IF EXISTS $table";
-        $pdo->exec($dropTable);
-    }
-
-    // Tworzenie bazy danych
-    $createDatabase = "CREATE DATABASE IF NOT EXISTS studentolx";
+    // Tworzenie nowej bazy danych
+    $createDatabase = "CREATE DATABASE $dbname";
     $pdo->exec($createDatabase);
     $pdo->exec("USE $dbname");
 
-    // Tabela type
+    // Tworzenie tabeli type
     $createTypeTable = "CREATE TABLE IF NOT EXISTS type (
         type_id VARCHAR(3) NOT NULL PRIMARY KEY,
         type_name VARCHAR(20) NOT NULL
@@ -42,7 +29,7 @@ try {
                         ('191', 'admin')";
     $pdo->exec($insertTypes);
 
-    // Tabela accounts
+    // Tworzenie tabeli accounts
     $createAccountsTable = "CREATE TABLE IF NOT EXISTS accounts (
         accountid INT NOT NULL AUTO_INCREMENT,
         login VARCHAR(100) NOT NULL,
@@ -61,7 +48,7 @@ try {
     )";
     $pdo->exec($createAccountsTable);
 
-    // Tabela auctions
+    // Tworzenie tabeli auctions
     $createAuctionTable = "CREATE TABLE IF NOT EXISTS auctions (
         auctionid INT NOT NULL AUTO_INCREMENT,
         accountid INT NOT NULL,
@@ -78,7 +65,7 @@ try {
     )";
     $pdo->exec($createAuctionTable);
 
-    // Tabela category
+    // Tworzenie tabeli category
     $createCategoryTable = "CREATE TABLE IF NOT EXISTS category (
         categoryid INT NOT NULL AUTO_INCREMENT,
         name INT NOT NULL,
@@ -87,16 +74,18 @@ try {
     )";
     $pdo->exec($createCategoryTable);
 
-    // Tabela file_to_auction
+    // Tworzenie tabeli file_to_auction
     $createFileToAuctionTable = "CREATE TABLE IF NOT EXISTS file_to_auction (
-        fileid INT NOT NULL AUTO_INCREMENT,
-        auctionid INT NOT NULL,
-        link VARCHAR(200) NOT NULL,
-        PRIMARY KEY (fileid)
+        file_id INT(11) NOT NULL AUTO_INCREMENT,
+        auction_id INT(11) NOT NULL,
+        filename VARCHAR(255) NOT NULL,
+        file_path VARCHAR(255) NOT NULL,
+        PRIMARY KEY (file_id),
+        FOREIGN KEY (auction_id) REFERENCES auctions(auctionid) ON DELETE CASCADE
     )";
     $pdo->exec($createFileToAuctionTable);
 
-    // Tabela message
+    // Tworzenie tabeli message
     $createMessageTable = "CREATE TABLE IF NOT EXISTS message (
         id INT NOT NULL AUTO_INCREMENT,
         mlid INT NOT NULL,
@@ -106,7 +95,7 @@ try {
     )";
     $pdo->exec($createMessageTable);
 
-    // Tabela message_link
+    // Tworzenie tabeli message_link
     $createMessageLinkTable = "CREATE TABLE IF NOT EXISTS message_link (
         mlid INT NOT NULL AUTO_INCREMENT,
         sellerid INT NOT NULL,
