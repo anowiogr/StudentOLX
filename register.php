@@ -104,7 +104,7 @@ ERROR;
             <div class="icheck-primary">
               <input type="checkbox" id="agreeTerms" name="terms" value="agree">
               <label for="agreeTerms">
-               Zapoznałem się z <a href="#">regulaminem</a>
+               Zapoznałem się z <a href="terms.php">regulaminem</a>
               </label>
             </div>
           </div>
