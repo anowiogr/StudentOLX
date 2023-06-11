@@ -7,10 +7,10 @@
     <meta name="description"
           content="Strona stworzona w celach nauki programowania www. Studencki OLX to strona stworzona, aby przećwiczyć tworzenie kodu w HTML|PHP|JavaScript w powiązaniu z SQL.">
     <link rel="icon"
-          type="image/png" href="images/favicon.ico">
+          type="image/png" href="./images/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 
     <title>Studencki OLX</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
@@ -20,7 +20,7 @@
 
     <div class="container">
 
-        <a href="#"><img src="images/icon.png" class="bi" width="40" height="40" /></a>
+        <a href="./index.php"><img src="./images/icon.png" class="bi" width="40" height="40" /></a>
 
         <button type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" class="navbar-toggler justify-content-center" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -31,12 +31,13 @@
             <ul class="navbar-nav">
                 <br />
                 <li class="nav-item active">
-                    <button type="button" class="btn btn-outline-light me-2">Zaloguj</button>
+                    <a href="./login.php"><button type="button" class="btn btn-outline-light me-2">Zaloguj</button></a>
+
 
                 </li>
                 <br />
                 <li class="nav-item active">
-                    <button type="button" class="btn btn-light">Zarejestruj się</button>
+                    <a href="./register.php"><button type="button" class="btn btn-light">Zarejestruj się</button></a>
                 </li>
             </ul>
 

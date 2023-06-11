@@ -1,11 +1,12 @@
 	<?php
-		include "constant/header.php"
+		include_once "constant/header.php"
 	?>
 
 	<body class="d-flex flex-column h-100">
-	
 
+	<div class="container prelative">
 		<!--TU WKLEJ TREŚĆ STRONY-->
+	</div>
 
 
 
@@ -13,7 +14,7 @@
 	</body>
 
 	<?php
-		include "constant/footer.php"
+		include_once "constant/footer.php"
 	?>
 
 </html>
