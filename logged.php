@@ -1,17 +1,18 @@
 <?php
   session_start();
-  //print_r($_SESSION["logged"]);
+  print_r($_SESSION["logged"]);
   //print_r(session_status());
   if (!isset($_SESSION["logged"]) || session_status() != 2){
     //print_r($_SESSION["logged"]);
+    $_SESSION["role"] = "guest";
     header("location: index.php");
   }else{
-    switch ($_SESSION["logged"]["id_r"]){
-      case 1:
-	      $role = "admin";
+    switch ($_SESSION["logged"]["account_type"]){
+      case 101:
+        $_SESSION["role"] = "admin";
         break;
-	    case 2:
-		    $role = "user";
+	    case 222:
+          $_SESSION["role"] = "user";
 		    break;
     }
     header("location: index.php");
