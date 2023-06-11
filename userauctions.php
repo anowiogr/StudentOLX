@@ -1,5 +1,5 @@
 <?php
-include_once "constant/header.php"
+include_once "constant/header.php";
 require 'scripts/connect.php';
 
 try {
