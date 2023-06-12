@@ -1,7 +1,11 @@
 <?php
 require 'constant/header.php';
 require 'scripts/connect.php';
+?>
+<body class="d-flex flex-column h-100">
 
+<div class="container prelative">
+<?php
 $title = '';
 $description = '';
 $used = false;
@@ -64,31 +68,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     // Wyświetlanie formularza dodawania nowego ogłoszenia
+    echo <<<TABLEFORM
+         <form method='POST' action='auction.php'>
+          <div class="form-row p-3">
+         <label for='title'>Tytuł:</label><br>
+         <input class="form-control"type='text' name='title' id='title' value='$title' required><br>
+    
+         <label for='description'>Opis:</label><br>
+         <textarea class="form-control" name='description' id='description' required>$description</textarea><br>
+         
+         <label class="form-check-label" for='used'>Używany: </label>
+         <input class="form-check-input" type='checkbox' name='used' id='used' <?php echo "($used ? 'checked' : '')"; ?> <br>
+    
+         <label class="form-check-label"for='private'>Prywatny:</label>
+         <input class="form-check-input" type='checkbox' name='private' id='private' <?php echo "($private ? 'checked' : '')"; ?> <br>
+    
+         <input type='hidden' name='account_id' value='1'> <!-- ID użytkownika, dla którego dodawane jest ogłoszenie-->
+            <br>
+         <button class="btn btn-outline-secondary" type='submit' name='action' value='preview'>Podgląd</button>
+         <button class="btn btn-secondary" type='submit' name='action' value='add'>Dodaj</button>
+         </div>
+        </form>
+    TABLEFORM;
 
-    echo "<form method='POST' action='auction.php'>";
-    echo "<label for='title'>Tytuł:</label><br>";
-    echo "<input type='text' name='title' id='title' value='" . $title . "' required><br>";
 
-    echo "<label for='description'>Opis:</label><br>";
-    echo "<textarea name='description' id='description' required>" . $description . "</textarea><br>";
-
-    echo "<label for='used'>Używany:</label>";
-    echo "<input type='checkbox' name='used' id='used' " . ($used ? 'checked' : '') . "><br>";
-
-    echo "<label for='private'>Prywatny:</label>";
-    echo "<input type='checkbox' name='private' id='private' " . ($private ? 'checked' : '') . "><br>";
-
-    echo "<label for='date_start'>Data rozpoczęcia:</label><br>";
-    echo "<input type='text' name='date_start' id='date_start' value='" . $dateStart . "' required><br>";
-
-    echo "<label for='date_end'>Data zakończenia:</label><br>";
-    echo "<input type='text' name='date_end' id='date_end' value='" . $dateEnd . "' required><br>";
-
-    echo "<input type='hidden' name='account_id' value='1'>"; // ID użytkownika, dla którego dodawane jest ogłoszenie
-
-    echo "<button type='submit' name='action' value='preview'>Podgląd</button>";
-    echo "<button type='submit' name='action' value='add'>Dodaj</button>";
-    echo "</form>";
 }
 ?>
 
@@ -112,3 +115,8 @@ $(function() {
   });
 });
 </script>
+</div>
+</body>
+<?php
+include_once "constant/footer.php";
+?>

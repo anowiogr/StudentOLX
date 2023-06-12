@@ -14,7 +14,7 @@ try {
         $auctionId = $_GET['auction_id'];
 
         // Pobranie informacji o wybranej aukcji
-        $query = "SELECT a.*, u.firstname, u.lastname FROM auctions a
+        $query = "SELECT a.*, u.firstname, u.lastname, u.phone FROM auctions a
                   INNER JOIN accounts u ON a.accountid = u.accountid
                   WHERE a.auctionid = :auctionId";
         $stmt = $pdo->prepare($query);
@@ -58,8 +58,17 @@ try {
             echo "<b>Prywatny: </b>" . ($auction['private'] ? 'Tak' : 'Nie') . "<br>";
             echo '<br>';
             echo "<b>Sprzedający:</b> " . $auction['firstname'] . " " . $auction['lastname'] . "<br>";
+            echo "<b>Telefon:</b> " . (is_null($_SESSION["logged"]["account_type"]) ?  "Zaloguj się aby zobaczyć nr telefonu" : $auction['phone']) ."<br><br>";
+            echo '<button class="btn btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                </svg>
+                Napisz wadomość
+            </button>';
             echo "</div></div>";
-            // Przycisk "Wróć do widoku wszystkich aukcji"
+            ?>
+
+            <?php
 
         } else {
             echo "Aukcja o podanym ID nie istnieje.";

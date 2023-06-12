@@ -48,7 +48,8 @@ try {
 
 		//header("location: ???");
 	}else{
-		echo "brak adresu email w bazie!";
+        $_SESSION["error"] = "Brak adresu email w bazie!";
+        echo "<script>history.back();</script>";
 	}
 } catch (mysqli_sql_exception $e) {
 	$_SESSION["error"] = $e->getMessage();

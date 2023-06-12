@@ -26,16 +26,7 @@ if ($_POST["email1"] != $_POST["email2"]){
 	$_SESSION["error"] = "Adresy email są różne!";
 }
 
-    $stmt = $conn->query("SELECT * FROM `accounts` WHERE `login` = ?");
-    $stmt->bind_param($_POST["nick"]);
-    $stmt->execute();
-    //echo $stmt -> num_rows;
-    if($stmt -> num_rows > 0){
-        $error = 1;
-        $_SESSION["error"] = "Podany nick istnieje już w bazie";
 
-    }
-    $stmt-> close();
 
 if ($error != 0){
 	echo "<script>history.back();</script>";

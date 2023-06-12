@@ -3,5 +3,5 @@
     $_SESSION["role"]="guest";
     $_SESSION["logged"]=null;
 
-    header("location: ../index.php");
+    echo"<script> window.history.back();</script>";
 ?>

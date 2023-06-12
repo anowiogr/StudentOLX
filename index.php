@@ -75,7 +75,7 @@ include_once "constant/header.php";
 		while ($category= $result->fetch_assoc()) {
 			echo <<< TABLECATEGORY
 				<div class="col-lg-4">
-					<svg class="bd-placeholder-img rounded-circle" width="100" height="100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
+					<svg class="bd-placeholder-img rounded-circle" width="60" height="60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
 					<h2 class="fw-normal">$category[name]</h2>
 				</div>
 				
@@ -92,8 +92,6 @@ include_once "constant/header.php";
 
 
 </div>
-
-
 
 
 

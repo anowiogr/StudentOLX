@@ -15,7 +15,6 @@ if (isset($_GET['account_id'])) {
     header('Location: login.php');
     exit();
 }
-
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -32,7 +31,7 @@ try {
         $username = $user['firstname'] . ' ' . $user['lastname'];
         echo "<h2>Ogłoszenia użytkownika: " . $username . "</h2>";
     }
-
+    echo "<div class='p-1'><a href='addauction.php' class='button'><button class='btn btn-secondary'>Dodaj ogłoszenie</button></a></div>";
     // Pobranie wszystkich ogłoszeń użytkownika wraz z nazwą kategorii
     $query = "SELECT auctions.*, accounts.accountid, category.name AS category_name
               FROM auctions
@@ -51,24 +50,31 @@ try {
                 <div class="row box p-3">
                     <img class="aimg" src="images/nofoto.jpg" />
                     <div class="box-text">
-                    <h3>
-                        <a class="atitle link-dark" href="auction.php?auction_id=$auction[auctionid]">$auction[title]</a></h3>
-                        
-                     </div>
-                   <div class="ainfo" width="100%">Data wystawienia: $auction[date_start] </div>
+                    <h3><a class="atitle link-dark" href="auction.php?auction_id=$auction[auctionid]">$auction[title]</a></h3>
+                     <div class="justify-content-end">
+                        <button class="btn btn-outline-secondary">Zmień</button>
+                       <button class="btn btn-outline-danger">Usuń</button>
+                     </div></div>
+                   <div class="ainfo text-right" width="100%">Data wystawienia: $auction[date_start] </div>
+                   
+                   
+                      
+                   
+                   
                 </div>
+                
                 <br>
             TABLELISTA;
         }
         echo "</table>";
     } else {
-        echo "<p class='info'>Brak ogłoszeń dla użytkownika o podanej nazwie.</p>";
-        echo "<p class='info'>Nie masz jeszcze żadnych ogłoszeń, czy chcesz dodać?</p>";
-        echo "<a href='addauction.php' class='button'>Dodaj ogłoszenie</a>";
+        echo "<p class='text-secondary p-3'><i>Nie masz jeszcze żadnych ogłoszeń, dodaj ogłoszenie i zarabiaj!</i></p>";
+
     }
 } catch (PDOException $e) {
     echo "Błąd połączenia: " . $e->getMessage();
 }
+   // echo "<a href='addauction.php' class='button'><button class='btn btn-secondary'>Dodaj ogłoszenie</button></a>";
 ?>
 </div>
 </body>

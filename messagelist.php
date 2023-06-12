@@ -17,8 +17,8 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->exec("USE $dbname");
 
-    // Zapytanie dla wiadomości sprzedawanych
-    $querySell = "SELECT message.description, auctions.title
+    // Zapytanie dla nagłówków wiadomości sprzedawanych
+    $querySell = "SELECT auctions.title, auctions.auctionid
                   FROM message
                   INNER JOIN auctions ON message.auctionid = auctions.auctionid
                   WHERE message.mlid IN (SELECT mlid FROM message_link WHERE sellerid = :account_id)
@@ -28,7 +28,7 @@ try {
     $stmtSell->execute();
 
     // Zapytanie dla wiadomości kupowanych
-    $queryBuy = "SELECT message.description, auctions.title
+    $queryBuy = "SELECT message.description, auctions.title, auctions.auctionid
                  FROM message
                  INNER JOIN auctions ON message.auctionid = auctions.auctionid
                  WHERE message.mlid IN (SELECT mlid FROM message_link WHERE buyerid = :account_id)
@@ -57,16 +57,38 @@ try {
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="buy" role="tabpanel" aria-labelledby="messageBuy-tab">
-                <br />
+                <div class="container">
+                    <table>
+                        <tr>
+                            <td>
+                                <table class="table">
+                                    <thead>
+
+
                 <?php
                 // Wyświetlanie wiadomości kupowanych
-                echo "Wiadomości kupowanych:<br>";
+
+
                 while ($rowBuy = $stmtBuy->fetch(PDO::FETCH_ASSOC)) {
-                    echo "Tytuł aukcji: " . $rowBuy['title'] . "<br>";
-                    echo "Opis wiadomości: " . $rowBuy['description'] . "<br><br>";
+                    //print_r($rowBuy);
+                echo <<< TABLEMESSLIST
+                
+                <tr>
+                    <th scope="col">$rowBuy[title]</th>
+                </tr>
+             TABLEMESSLIST;
                 }
                 ?>
-            </div>
+                </thead>
+             </table>
+             </td>
+                    <td colspan="2"></td>
+                    </tr>
+                    </table>
+                    <br />
+            </div></div>
+
+
             <div class="tab-pane fade" id="sell" role="tabpanel" aria-labelledby="messageSell-tab">
                 <br />
                 <?php
