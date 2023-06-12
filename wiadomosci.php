@@ -1,6 +1,65 @@
 <?php
-include_once "constant/header.php";
+require "constant/header.php";
+require 'scripts/connect.php';
+
+
+// Sprawdzenie czy użytkownik jest zalogowany
+
+if (!isset($_SESSION['account_id'])) {
+    // Przekierowanie użytkownika na stronę logowania lub inny odpowiedni komunikat
+    header("Location: login.php");
+    exit();
+}
+
+// Odczytanie account_id z sesji
+$account_id = $_SESSION['account_id'];
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->exec("USE $dbname");
+
+    // Zapytanie dla wiadomości sprzedawanych
+    $querySell = "SELECT message.description, auctions.title
+                  FROM message
+                  INNER JOIN auctions ON message.auctionid = auctions.auctionid
+                  WHERE message.mlid IN (SELECT mlid FROM message_link WHERE sellerid = :account_id)
+                  AND message.auctionid IN (SELECT auctionid FROM auctions WHERE accountid = :account_id)";
+    $stmtSell = $pdo->prepare($querySell);
+    $stmtSell->bindValue(':account_id', $account_id);
+    $stmtSell->execute();
+
+    // Zapytanie dla wiadomości kupowanych
+    $queryBuy = "SELECT message.description, auctions.title
+                 FROM message
+                 INNER JOIN auctions ON message.auctionid = auctions.auctionid
+                 WHERE message.mlid IN (SELECT mlid FROM message_link WHERE buyerid = :account_id)
+                 AND message.auctionid NOT IN (SELECT auctionid FROM auctions WHERE accountid = :account_id)";
+    $stmtBuy = $pdo->prepare($queryBuy);
+    $stmtBuy->bindValue(':account_id', $account_id);
+    $stmtBuy->execute();
+
+    // Wyświetlanie wiadomości sprzedawanych
+    echo "Wiadomości sprzedawanych:<br>";
+    while ($rowSell = $stmtSell->fetch(PDO::FETCH_ASSOC)) {
+        echo "Tytuł aukcji: " . $rowSell['title'] . "<br>";
+        echo "Opis wiadomości: " . $rowSell['description'] . "<br><br>";
+    }
+
+    // Wyświetlanie wiadomości kupowanych
+    echo "Wiadomości kupowanych:<br>";
+    while ($rowBuy = $stmtBuy->fetch(PDO::FETCH_ASSOC)) {
+        echo "Tytuł aukcji: " . $rowBuy['title'] . "<br>";
+        echo "Opis wiadomości: " . $rowBuy['description'] . "<br><br>";
+    }
+
+} catch (PDOException $e) {
+    echo "Błąd połączenia lub aktualizacji bazy danych: " . $e->getMessage();
+}
 ?>
+
+
+
 
 <body class="d-flex flex-column h-100">
 
@@ -24,31 +83,6 @@ include_once "constant/header.php";
             <div class="tab-pane fade" id="sell" role="tabpanel" aria-labelledby="messageSell-tab">
                 <br />
                 Twoje wiadomości dotyczące przedmiotów sprzedawanych.
-
-                <?php
-                // Pobranie accountid z sesji
-                $accountid = $_SESSION['accountid'];
-
-                // Zapytanie SQL
-                $sql = "SELECT mlid, description FROM message_link 
-                        INNER JOIN auctions ON message_link.auctionid = auctions.auctionid
-                        WHERE message_link.sellerid = :accountid";
-                $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(':accountid', $accountid);
-                $stmt->execute();
-                $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                // Wyświetlanie rozmów
-                foreach ($messages as $message) {
-                    $mlid = $message['mlid'];
-                    $description = $message['description'];
-
-                    echo "<div>
-                            <h4>Rozmowa $mlid:</h4>
-                            <p>$description</p>
-                          </div>";
-                }
-                ?>
             </div>
         </div>
     </div>
