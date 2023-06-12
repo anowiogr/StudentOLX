@@ -120,4 +120,5 @@ print_r($_SESSION['logged']);
 
     </div>
 </nav>
+<br>
 
