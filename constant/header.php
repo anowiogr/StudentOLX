@@ -68,7 +68,7 @@
                                 <a class="nav-link" href="./userauctions.php">Aukcje</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./wiadomosci.php">Wiadomości</a>
+                                <a class="nav-link" href="./messagelist.php">Wiadomości</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="./userabout.php">Ustawienia</a>
@@ -89,7 +89,7 @@
                                     <a class="nav-link" href="./userauctions.php">Aukcje</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="./wiadomosci.php">Wiadomości</a>
+                                    <a class="nav-link" href="./messagelist.php">Wiadomości</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Administracja</a>

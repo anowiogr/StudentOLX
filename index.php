@@ -16,9 +16,9 @@ include_once "constant/header.php";
 			<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
 
 		</div>
-		<div class="carousel-inner p-3">
+		<div class="carousel-inner">
 
-			<div class="carousel-item active">
+			<div class="carousel-item active p-3">
 				<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
 				<div class="container">
 					<div class="carousel-caption">
@@ -37,7 +37,7 @@ include_once "constant/header.php";
 
 				while ($auction = $result->fetch_assoc()) {
 					echo <<< TABLEAUCTION
-					<div class="carousel-item">
+					<div class="carousel-item p-3">
 						<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
 						<div class="container">
 							<div class="carousel-caption" padding="10%">
