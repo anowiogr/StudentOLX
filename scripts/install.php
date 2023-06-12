@@ -1,5 +1,8 @@
 <?php
-require 'connect.php';
+$host = "localhost";
+$dbname = "your_database_name";
+$user = "your_username";
+$password = "your_password";
 
 try {
     $pdo = new PDO("mysql:host=$host", $user, $password);
@@ -98,6 +101,20 @@ try {
         auctionid INT NOT NULL
     )";
     $pdo->exec($createMessageLinkTable);
+
+    // Wstawianie danych do tabeli category
+    $insertCategories = "INSERT INTO category (categoryid, name, in_tree)
+                    VALUES
+                        (1, 'Motoryzacja', 0),
+                        (3, 'Praca', 0),
+                        (4, 'Zdrowie i Uroda', 0),
+                        (5, 'Elektronika', 0),
+                        (6, 'Moda', 0),
+                        (7, 'Zwierzęta', 0),
+                        (8, 'Wypożyczalnia', 0),
+                        (9, 'Sport', 0),
+                        (10, 'Hobby', 0)";
+    $pdo->exec($insertCategories);
 
     echo "Baza danych została utworzona pomyślnie.";
 } catch (PDOException $e) {
