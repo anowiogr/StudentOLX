@@ -13,9 +13,15 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $accountId = $_SESSION['logged']['account_id'];
+    ?>
+<body class="d-flex flex-column h-100">
+
+<div class="container prelative">
+<?php
 
     // Pobranie istniejących informacji o użytkowniku
-    $query = "SELECT accounts.*, type.type_name
+    $query = "SELECT accounts.*, type.type_name,
+                CASE WHEN accounts.verified = 1 THEN 'TAK' ELSE 'NIE' END as verifiedtext
               FROM accounts
               LEFT JOIN type ON accounts.account_type = type.type_id
               WHERE accounts.accountid = :accountid";
@@ -26,34 +32,62 @@ try {
     $user = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        echo "<h2>Informacje o użytkowniku</h2>";
-        echo "<p>ID: " . $user['accountid'] . "</p>";
-        echo "<p>Login: " . $user['login'] . "</p>";
-        echo "<p>Typ konta: " . $user['type_name'] . "</p>";
-        echo "<p>Zweryfikowany: " . ($user['verified'] ? 'Tak' : 'Nie') . "</p>";
 
-        // Formularz umożliwiający zmianę danych użytkownika
-        echo "<h2>Zmień dane użytkownika</h2>";
-        echo "<form method='POST' action=''>";
-        echo "<label for='firstname'>Imię:</label>";
-        echo "<input type='text' name='firstname' id='firstname' value='" . $user['firstname'] . "' maxlength='50' placeholder='Max 50 znaków' required><br>";
-        echo "<label for='lastname'>Nazwisko:</label>";
-        echo "<input type='text' name='lastname' id='lastname' value='" . $user['lastname'] . "' maxlength='150' placeholder='Max 150 znaków' required><br>";
-        echo "<label for='email'>Email:</label>";
-        echo "<input type='email' name='email' id='email' value='" . $user['email'] . "' maxlength='250' placeholder='Wprowadź poprawny email' required><br>";
-        echo "<label for='phone'>Telefon:</label>";
-        echo "<input type='tel' name='phone' id='phone' value='" . $user['phone'] . "' pattern='[0-9]{9}' placeholder='Numer telefonu (9 cyfr)' required><br>";
-        echo "<label for='address'>Adres:</label>";
-        echo "<input type='text' name='address' id='address' value='" . $user['address'] . "' maxlength='200' placeholder='Max 200 znaków' required><br>";
-        echo "<label for='codezip'>Kod pocztowy:</label>";
-        echo "<input type='text' name='codezip' id='codezip' value='" . $user['codezip'] . "' pattern='[0-9]{2}-[0-9]{3}' placeholder='Kod pocztowy (XX-XXX)' required><br>";
-        echo "<label for='city'>Miasto:</label>";
-        echo "<input type='text' name='city' id='city' value='" . $user['city'] . "' maxlength='50' placeholder='Max 50 znaków' required><br>";
-        echo "<label for='country'>Kraj:</label>";
-        echo "<input type='text' name='country' id='country' value='" . $user['country'] . "' maxlength='50' placeholder='Max 50 znaków' required><br>";
-        echo "<input type='hidden' name='account_id' value='" . $accountId . "'>";
-        echo "<button type='submit'>Zapisz zmiany</button>";
-        echo "</form>";
+        echo <<<TABLELUSER
+            <table class="table">
+            <thead>
+                 <tr>
+                    <th scope="col"><h2>Informacje o użytkowniku</h2></th>
+                    <th scope="col"><h2>Zmień dane użytkownika</h2></th>
+                </tr>
+            </thead>
+           
+            <tr>
+                <td>
+                    <b>Login:</b> $user[login]
+                    <br>
+                    <b>Typ konta:</b> $user[type_name]
+                    <br>
+                    <b>Zweryfikowany:</b> $user[verifiedtext]
+                    <br>
+                </td>
+                <td>
+                    <form method='POST' action=''>
+                    <div class="form-row">
+                        <label for='firstname'>Imię:</label>
+                        <input class="form-control" type='text' name='firstname' id='firstname' value='$user[firstname]' maxlength='50' placeholder='Max 50 znaków' required><br>
+
+                        <label for='lastname'>Nazwisko:</label>
+                        <input class="form-control"type='text' name='lastname' id='lastname' value='$user[lastname]' maxlength='150' placeholder='Max 150 znaków' required><br>
+
+                    <label for='email'>Email:</label>
+                    <input class="form-control" type='email' name='email' id='email' value='$user[email]' maxlength='250' placeholder='Wprowadź poprawny email' required><br>
+                    
+                    <label for='phone'>Telefon:</label>
+                    <input class="form-control" type='tel' name='phone' id='phone' value='$user[phone]' pattern='[0-9]{9}' placeholder='Numer telefonu (9 cyfr)' required><br>
+                    
+                    <label for='address'>Adres:</label>
+                    <input class="form-control" type='text' name='address' id='address' value='$user[address] ' maxlength='200' placeholder='Max 200 znaków' required><br>
+                    
+                    <label for='codezip'>Kod pocztowy:</label>
+                    <input class="form-control" type='text' name='codezip' id='codezip' value='$user[codezip]' pattern='[0-9]{2}-[0-9]{3}' placeholder='Kod pocztowy (XX-XXX)' required><br>
+                    
+                    <label for='city'>Miasto:</label>
+                    <input class="form-control" type='text' name='city' id='city' value='$user[city]' maxlength='50' placeholder='Max 50 znaków' required><br>
+                    
+                    <label for='country'>Kraj:</label>
+                    <input class="form-control" type='text' name='country' id='country' value='$user[country]' maxlength='50' placeholder='Max 50 znaków' required><br>
+                    
+                    <input type='hidden' name='account_id' value='$accountId'>
+                    </div>
+                    <button class="btn btn-danger" type='submit'>Zapisz zmiany</button>
+                    </form>
+                </td>
+            </tr>
+            </table>
+        TABLELUSER;
+
+
 
         // Aktualizacja danych użytkownika
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -92,21 +126,24 @@ try {
 
             try {
                 $updateStatement->execute();
-                echo "<p class='success'>Dane zostały zaktualizowane.</p>";
+                echo "<div class='alert alert-success' role='alert'>Dane zostały zaktualizowane.</div>";
             } catch (PDOException $e) {
                 $errorMessage = $e->getMessage();
             }
 
             if ($errorMessage !== '') {
-                echo "<p class='error'>Błąd: " . $errorMessage . "</p>";
+                echo "<div class='alert alert-danger' role='alert'>Błąd: " . $errorMessage . "</div>";
             }
         }
     } else {
-        echo "<p class='error'>Nie znaleziono użytkownika o podanym ID.</p>";
+        echo "<div class='alert alert-danger' role='alert'>Nie znaleziono użytkownika o podanym ID.</div>";
     }
 } catch (PDOException $e) {
     echo "Błąd połączenia: " . $e->getMessage();
 }
-
+?>
+</div>
+</body>
+    <?php
 require 'constant/footer.php';
 ?>
