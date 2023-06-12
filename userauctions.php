@@ -2,11 +2,17 @@
 include_once "constant/header.php";
 require 'scripts/connect.php';
 
+if (!isset($_SESSION['logged']['account_id'])) {
+    // Przekierowanie na stronę logowania, jeśli brak zdefiniowanego ID konta w sesji
+    header('Location: login.php');
+    exit();
+}
+    
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $accountId = isset($_POST['account_id']) ? $_POST['account_id'] : '';
+    $accountId = $_SESSION['account_id'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Pobranie wszystkich aukcji użytkownika
@@ -40,19 +46,14 @@ try {
             echo "</table>";
         } else {
             echo "<p class='info'>Brak aukcji dla użytkownika o podanym ID konta.</p>";
+            echo "<p class='info'>Nie masz jeszcze żadnych ogłoszeń, czy chcesz dodać?</p>";
+            echo "<a href='addauction.php' class='button'>Dodaj ogłoszenie</a>";
         }
-    } else {
-
     }
+
 } catch (PDOException $e) {
     echo "Błąd połączenia: " . $e->getMessage();
 }
 
-echo "<p class='info'>Wpisz ID konta, aby wyświetlić jego aukcje.</p>";
-echo "<form method='POST' action=''>";
-echo "<label for='account_id'>ID konta:</label>";
-echo "<input type='text' name='account_id' id='account_id' value='" . $accountId . "' required>";
-echo "<button type='submit'>Zatwierdź</button>";
-echo "</form>";
 require 'constant/footer.php';
 ?>
