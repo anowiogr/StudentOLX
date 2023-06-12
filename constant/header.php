@@ -7,7 +7,7 @@
     }
 
 //do wywalenia
-print_r($_SESSION['logged']);
+//print_r($_SESSION['logged']);
 
 ?>
 <!doctype html>
@@ -61,6 +61,7 @@ print_r($_SESSION['logged']);
             }elseif ($_SESSION["role"]=="user"){
         ?>
 
+        <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
                 <div class="dropdown show">
 
                     <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="navbar-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,10 +84,11 @@ print_r($_SESSION['logged']);
                     <a href="./scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
                 </li>
                 </ul>
-
+        </div>
                 <?php
         }elseif ($_SESSION["role"]=="admin"){
         ?>
+        <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
                 <div class="dropdown show">
 
                     <a class="btn btn-light dropdown-toggle" href="#" role="button" id="navbar-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -113,7 +115,7 @@ print_r($_SESSION['logged']);
 
                     </li>
                 </ul>
-
+        </div>
                 <?php
         }
         ?>
