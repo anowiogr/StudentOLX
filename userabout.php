@@ -2,14 +2,6 @@
 require 'constant/header.php';
 require 'scripts/connect.php';
 
-// Sprawdzenie, czy użytkownik jest zalogowany
-session_start();
-
-if (!isset($_SESSION['logged'])) {
-    header("Location: login.php");
-    exit();
-}
-
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -118,14 +110,6 @@ try {
 } catch (PDOException $e) {
     echo "Błąd połączenia: " . $e->getMessage();
 }
-?>
 
-<h2>Wyszukaj użytkownika</h2>
-<form method="POST" action="">
-    <label for="account_id">ID użytkownika:</label>
-    <input type="text" name="account_id" id="account_id" required>
-    <button type="submit">Szukaj</button>
-</form>
-<?php
 require 'constant/footer.php';
 ?>
