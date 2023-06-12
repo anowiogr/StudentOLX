@@ -20,12 +20,15 @@
           content="Strona stworzona w celach nauki programowania www. Studencki OLX to strona stworzona, aby przećwiczyć tworzenie kodu w HTML|PHP|JavaScript w powiązaniu z SQL.">
     <link rel="icon"
           type="image/png" href="./images/favicon.ico">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-          rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
     <link rel="stylesheet" href="./css/style.css">
 
     <title>Studencki OLX</title>
     </head>
+
+
 
 <nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark" style="position: relative;">
 
@@ -62,65 +65,53 @@
         ?>
 
         <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
-                <div class="dropdown show">
-
-                    <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="navbar-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                        </svg>
-                        Twoje konto
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Aukcje</a>
-                        <a class="dropdown-item" href="#">Wiadomości</a>
-                        <a class="dropdown-item" href="#">Ustawienia</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Wyloguj</a>
-                    </div>
-                </div>
-                <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a href="./scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="./userauctions.php">Aukcje</a>
                 </li>
-                </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="./wiadomosci.php">Wiadomości</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./userabout.php">Ustawienia</a>
+                </li>
+                <li class="nav-item active">
+                        <a href="./scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
+                </li>
+            </ul>
         </div>
                 <?php
         }elseif ($_SESSION["role"]=="admin"){
         ?>
-        <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
-                <div class="dropdown show">
 
-                    <a class="btn btn-light dropdown-toggle" href="#" role="button" id="navbar-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                        </svg>
-                        Twoje konto
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Aukcje</a>
-                        <a class="dropdown-item" href="#">Wiadomości</a>
-                        <a class="dropdown-item" href="#">Moderowanie</a>
-                        <a class="dropdown-item" href="#">Ustawienia</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Wyloguj</a>
-                    </div>
+                <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./userauctions.php">Aukcje</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./wiadomosci.php">Wiadomości</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Administracja</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./userabout.php">Ustawienia</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="./scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
 
-                        <a href="./scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
-
-
-                    </li>
-                </ul>
-        </div>
                 <?php
         }
         ?>
 
     </div>
 </nav>
-<br>
+<body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
+</body>

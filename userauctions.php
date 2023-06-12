@@ -3,7 +3,7 @@ include_once "constant/header.php";
 require 'scripts/connect.php';
 ?>
 <body class="d-flex flex-column h-100">
-<div class="container prelative">
+<div class="container prelative"><br>
 <?php
 // Sprawdzenie, czy przekazano account_id w GET
 if (isset($_GET['account_id'])) {
