@@ -1,7 +1,10 @@
 <?php
 include_once "constant/header.php";
 require 'scripts/connect.php';
-
+?>
+<body class="d-flex flex-column h-100">
+<div class="container prelative">
+<?php
 // Sprawdzenie, czy przekazano account_id w GET
 if (isset($_GET['account_id'])) {
     $accountId = $_GET['account_id'];
@@ -43,21 +46,19 @@ try {
     $auctions = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     if ($auctions) {
-        echo "<table>";
-        echo "<tr><th>ID ogłoszenia</th><th>Tytuł</th><th>Kategoria</th><th>Data rozpoczęcia</th><th>Data zakończenia</th><th>Sprzedane</th><th>Akcje</th></tr>";
         foreach ($auctions as $auction) {
-            echo "<tr>";
-            echo "<td>" . $auction['auctionid'] . "</td>";
-            echo "<td>" . $auction['title'] . "</td>";
-            echo "<td>" . ($auction['category_name'] ?? 'Brak') . "</td>";
-            echo "<td>" . $auction['date_start'] . "</td>";
-            echo "<td>" . $auction['date_end'] . "</td>";
-            echo "<td>" . ($auction['selled'] ? 'Tak' : 'Nie') . "</td>";
-            echo "<td><form method='GET' action='auction.php'>";
-            echo "<input type='hidden' name='auction_id' value='" . $auction['auctionid'] . "'>";
-            echo "<button type='submit'>Pokaż szczegóły</button>";
-            echo "</form></td>";
-            echo "</tr>";
+            echo <<< TABLELISTA
+                <div class="row box p-3">
+                    <img class="aimg" src="images/nofoto.jpg" />
+                    <div class="box-text">
+                    <h3>
+                        <a class="atitle link-dark" href="auction.php?auction_id=$auction[auctionid]">$auction[title]</a></h3>
+                        
+                     </div>
+                   <div class="ainfo" width="100%">Data wystawienia: $auction[date_start] </div>
+                </div>
+                <br>
+            TABLELISTA;
         }
         echo "</table>";
     } else {
@@ -68,6 +69,9 @@ try {
 } catch (PDOException $e) {
     echo "Błąd połączenia: " . $e->getMessage();
 }
-
+?>
+</div>
+</body>
+<?php
 require 'constant/footer.php';
 ?>

@@ -4,7 +4,7 @@ include_once "constant/header.php";
 
 <body class="d-flex flex-column h-100">
 
-<div class="container prelative text-center"">
+<div class="container prelative text-center">
 
 
 	<div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel" data-bs-theme="dark">
