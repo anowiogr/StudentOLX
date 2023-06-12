@@ -6,8 +6,8 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Sprawdzenie, czy przesłano ID aukcji
-    if (isset($_POST['auction_id'])) {
-        $auctionId = $_POST['auction_id'];
+    if (isset($_GET['auction_id'])) {
+        $auctionId = $_GET['auction_id'];
 
         // Pobranie informacji o wybranej aukcji
         $query = "SELECT a.*, u.firstname, u.lastname FROM auctions a
@@ -33,9 +33,7 @@ try {
             echo "<br>";
 
             // Przycisk "Wróć do widoku wszystkich aukcji"
-            echo '<form method="POST" action="auction.php">';
-            echo '<input type="submit" value="Wróć do widoku wszystkich aukcji">';
-            echo '</form>';
+            echo '<a href="auction.php">Wróć do widoku wszystkich aukcji</a>';
         } else {
             echo "Aukcja o podanym ID nie istnieje.";
         }
@@ -52,10 +50,7 @@ try {
             echo "Tytuł: " . $auction['title'] . "<br>";
             echo "Sprzedający: " . $auction['firstname'] . " " . $auction['lastname'] . "<br>";
             echo "Oferta aktualna: " . ($auction['selled'] ? 'Nie' : 'Tak') . "<br>";
-            echo '<form method="POST" action="auction.php">';
-            echo '<input type="hidden" name="auction_id" value="' . $auction['auctionid'] . '">';
-            echo '<input type="submit" value="Pokaż szczegóły">';
-            echo '</form>';
+            echo '<a href="auction.php?auction_id=' . $auction['auctionid'] . '">Pokaż szczegóły</a>';
             echo "<br>";
         }
     }
