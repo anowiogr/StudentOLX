@@ -27,10 +27,10 @@ try {
     // Wstawianie danych do tabeli accounts
     $insertAccounts = "INSERT INTO accounts (login, password, account_type, verified, firstname, lastname, email, phone, address, codezip, city, country)
                     VALUES
-                        ('Gandalf', 'password1', '101', 1, 'Gandalf', 'Szary', 'gandalf@example.com', '123456789', 'Mroczna Dolina 1', '12-345', 'Minas Tirith', 'Gondor'),
-                        ('Frodo', 'password2', '222', 1, 'Frodo', 'Baggins', 'frodo@example.com', '987654321', 'Hobbiton 2', '98-765', 'Shire', 'Middle-earth'),
-                        ('Yennefer', 'password3', '222', 1, 'Yennefer', 'z Vengerbergu', 'yennefer@example.com', '555555555', 'Wyzima 3', '54-321', 'Redania', 'Księstwo Redanii'),
-                        ('Geralt', 'password4', '222', 1, 'Geralt', 'z Rivii', 'geralt@example.com', '777777777', 'Kaer Morhen 4', '01-234', 'Temeria', 'Królestwo Temerii')";
+                        ('Gandalf', '$argon2id$v=19$m=65536,t=4,p=1$Vzc5dU9wUzlpZ2FrZU5YaA$SxzTenBpsH+goci3wm0fyRwIBiSCfWnUd9Fg68AB/Mc', '101', 1, 'Gandalf', 'Szary', 'gandalf@example.com', '123456789', 'Mroczna Dolina 1', '12-345', 'Minas Tirith', 'Gondor'),
+                        ('Frodo', '$argon2id$v=19$m=65536,t=4,p=1$Vzc5dU9wUzlpZ2FrZU5YaA$SxzTenBpsH+goci3wm0fyRwIBiSCfWnUd9Fg68AB/Mc', '222', 1, 'Frodo', 'Baggins', 'frodo@example.com', '987654321', 'Hobbiton 2', '98-765', 'Shire', 'Middle-earth'),
+                        ('Yennefer', '$argon2id$v=19$m=65536,t=4,p=1$Vzc5dU9wUzlpZ2FrZU5YaA$SxzTenBpsH+goci3wm0fyRwIBiSCfWnUd9Fg68AB/Mc', '222', 1, 'Yennefer', 'z Vengerbergu', 'yennefer@example.com', '555555555', 'Wyzima 3', '54-321', 'Redania', 'Księstwo Redanii'),
+                        ('Geralt', '$argon2id$v=19$m=65536,t=4,p=1$Vzc5dU9wUzlpZ2FrZU5YaA$SxzTenBpsH+goci3wm0fyRwIBiSCfWnUd9Fg68AB/Mc', '222', 1, 'Geralt', 'z Rivii', 'geralt@example.com', '777777777', 'Kaer Morhen 4', '01-234', 'Temeria', 'Królestwo Temerii')";
     $pdo->exec($insertAccounts);
 
     // Wstawianie danych do tabeli auctions

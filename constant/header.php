@@ -6,7 +6,8 @@
         $_SESSION["role"]="guest";
     }
 
-
+//do wywalenia
+print_r($_SESSION['logged']);
 
 ?>
 <!doctype html>
@@ -106,7 +107,11 @@
                 </div>
                 <ul class="navbar-nav">
                     <li class="nav-item active">
+<<<<<<< HEAD
                         <a href="./scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
+=======
+                        <a href="/scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
+>>>>>>> 73200362074c83c62be7efddb22fcd1140c6ada3
                     </li>
                 </ul>
 
