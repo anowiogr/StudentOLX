@@ -6,6 +6,8 @@
         $_SESSION["role"]="guest";
     }
 
+
+
 ?>
 <!doctype html>
 <html class="h-100">
@@ -22,10 +24,11 @@
     <link rel="stylesheet" href="./css/style.css">
 
     <title>Studencki OLX</title>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-</head>
+    </head>
 
 <nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark" style="position: relative;">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
 
     <div class="container">
 
@@ -58,46 +61,58 @@
         <?php
             }elseif ($_SESSION["role"]=="user"){
         ?>
-                <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
 
-                    <ul class="navbar-nav">
-                        </li>
-                        <br />
-                        <li class="nav-item active">
-                            <a href="#">
-                            <button type="button" class="btn btn-light">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                            </svg>
-                            Twoje konto</button>
-                            </a>
-                        </li>
-                    </ul>
+                <div class="dropdown show">
 
+                    <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="navbar-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                        </svg>
+                        Twoje konto
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Aukcje</a>
+                        <a class="dropdown-item" href="#">Wiadomości</a>
+                        <a class="dropdown-item" href="#">Ustawienia</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Wyloguj</a>
+                    </div>
                 </div>
+                <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a href="../scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
+                </li>
+                </ul>
 
                 <?php
         }elseif ($_SESSION["role"]=="admin"){
         ?>
-        <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
+                <div class="dropdown show">
 
-        <ul class="navbar-nav">
-            </li>
-            <br />
-            <li class="nav-item active">
-                <a href="#">
-                    <button type="button" class="btn btn-light">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
-                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                            <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z"/>
+                    <a class="btn btn-light dropdown-toggle" href="#" role="button" id="navbar-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                         </svg>
-                        Twoje konto</button>
-                </a>
-            </li>
-        </ul>
+                        Twoje konto
+                    </a>
 
-    </div>
-        <?php
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Aukcje</a>
+                        <a class="dropdown-item" href="#">Wiadomości</a>
+                        <a class="dropdown-item" href="#">Moderowanie</a>
+                        <a class="dropdown-item" href="#">Ustawienia</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Wyloguj</a>
+                    </div>
+                </div>
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a href="../scripts/logout.php"><button type="button" class="btn btn-danger">Wyloguj</button></a>
+                    </li>
+                </ul>
+
+                <?php
         }
         ?>
 
