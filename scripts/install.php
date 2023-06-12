@@ -1,9 +1,5 @@
 <?php
-$host = "localhost";
-$dbname = "your_database_name";
-$user = "your_username";
-$password = "your_password";
-
+require 'connect.php';
 try {
     $pdo = new PDO("mysql:host=$host", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -16,6 +12,10 @@ try {
     $createDatabase = "CREATE DATABASE $dbname";
     $pdo->exec($createDatabase);
     $pdo->exec("USE $dbname");
+
+    // Usuwanie tabel
+    $dropTables = "DROP TABLE IF EXISTS type, accounts, auctions, category, file_to_auction, message, message_link";
+    $pdo->exec($dropTables);
 
     // Tworzenie tabeli type
     $createTypeTable = "CREATE TABLE IF NOT EXISTS type (

@@ -6,23 +6,11 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->exec("USE $dbname");
 
-    // Czyszczenie danych w tabelach
-    $truncateTables = "TRUNCATE TABLE type;
-                       TRUNCATE TABLE accounts;
-                       TRUNCATE TABLE auctions;
-                       TRUNCATE TABLE category;
-                       
-                       TRUNCATE TABLE message;
-                       TRUNCATE TABLE message_link";
-    $pdo->exec($truncateTables);
-
-    // Wstawianie danych do tabeli type
-    $insertTypes = "INSERT INTO type (type_id, type_name)
-                    VALUES
-                        ('222', 'user'),
-                        ('101', 'mod'),
-                        ('191', 'admin')";
-    $pdo->exec($insertTypes);
+    $updateTables = "UPDATE accounts SET login = '', password = '', verified = 0, firstname = '', lastname = '', email = '', phone = '', address = '', codezip = '', city = '', country = '';
+                     UPDATE auctions SET title = '', description = '', used = 0, private = 0, date_start = NULL, date_end = NULL, selled = 0, buyerid = NULL;
+                     UPDATE message SET mlid = 0, date = NULL, description = '';
+                     DELETE FROM message_link";
+    $pdo->exec($updateTables);
 
     // Wstawianie danych do tabeli accounts
     $insertAccounts = "INSERT INTO accounts (login, password, account_type, verified, firstname, lastname, email, phone, address, codezip, city, country)
@@ -32,6 +20,7 @@ try {
                         ('Yennefer', '', '222', 1, 'Yennefer', 'z Vengerbergu', 'yennefer@example.com', '555555555', 'Wyzima 3', '54-321', 'Redania', 'Księstwo Redanii'),
                         ('Geralt', '', '222', 1, 'Geralt', 'z Rivii', 'geralt@example.com', '777777777', 'Kaer Morhen 4', '01-234', 'Temeria', 'Królestwo Temerii')";
     $pdo->exec($insertAccounts);
+
 
     // Wstawianie danych do tabeli auctions
     $insertAuctions = "INSERT INTO auctions (accountid, categoryid, title, description, used, private, date_start, date_end, selled, buyerid)

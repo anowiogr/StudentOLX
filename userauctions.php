@@ -30,10 +30,11 @@ try {
         echo "<h2>Ogłoszenia użytkownika: " . $username . "</h2>";
     }
 
-    // Pobranie wszystkich ogłoszeń użytkownika
-    $query = "SELECT auctions.*, accounts.accountid
+    // Pobranie wszystkich ogłoszeń użytkownika wraz z nazwą kategorii
+    $query = "SELECT auctions.*, accounts.accountid, category.name AS category_name
               FROM auctions
               INNER JOIN accounts ON auctions.accountid = accounts.accountid
+              LEFT JOIN category ON auctions.categoryid = category.categoryid
               WHERE accounts.accountid = :accountid";
     $statement = $pdo->prepare($query);
     $statement->bindParam(':accountid', $accountId);
@@ -43,11 +44,12 @@ try {
 
     if ($auctions) {
         echo "<table>";
-        echo "<tr><th>ID ogłoszenia</th><th>Tytuł</th><th>Data rozpoczęcia</th><th>Data zakończenia</th><th>Sprzedane</th><th>Akcje</th></tr>";
+        echo "<tr><th>ID ogłoszenia</th><th>Tytuł</th><th>Kategoria</th><th>Data rozpoczęcia</th><th>Data zakończenia</th><th>Sprzedane</th><th>Akcje</th></tr>";
         foreach ($auctions as $auction) {
             echo "<tr>";
             echo "<td>" . $auction['auctionid'] . "</td>";
             echo "<td>" . $auction['title'] . "</td>";
+            echo "<td>" . ($auction['category_name'] ?? 'Brak') . "</td>";
             echo "<td>" . $auction['date_start'] . "</td>";
             echo "<td>" . $auction['date_end'] . "</td>";
             echo "<td>" . ($auction['selled'] ? 'Tak' : 'Nie') . "</td>";
