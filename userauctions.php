@@ -2,8 +2,13 @@
 include_once "constant/header.php";
 require 'scripts/connect.php';
 
-if (!isset($_SESSION['logged']['account_id'])) {
-    // Przekierowanie na stronę logowania, jeśli brak zdefiniowanego ID konta w sesji
+// Sprawdzenie, czy przekazano account_id w GET
+if (isset($_GET['account_id'])) {
+    $accountId = $_GET['account_id'];
+} elseif (isset($_SESSION['logged']['account_id'])) {
+    $accountId = $_SESSION['logged']['account_id'];
+} else {
+    // Przekierowanie na stronę logowania, jeśli brak account_id w GET i sesji
     header('Location: login.php');
     exit();
 }
@@ -11,8 +16,6 @@ if (!isset($_SESSION['logged']['account_id'])) {
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $accountId = $_SESSION['logged']['account_id'];
 
     // Pobranie nazwy użytkownika
     $query = "SELECT firstname, lastname FROM accounts WHERE accountid = :accountid";
