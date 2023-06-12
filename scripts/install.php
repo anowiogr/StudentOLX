@@ -1,20 +1,12 @@
 <?php
 require 'connect.php';
+
 try {
-    $pdo = new PDO("mysql:host=$host", $user, $password);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Usuwanie istniejącej bazy danych
-    $dropDatabase = "DROP DATABASE IF EXISTS $dbname";
-    $pdo->exec($dropDatabase);
-
-    // Tworzenie nowej bazy danych
-    $createDatabase = "CREATE DATABASE $dbname";
-    $pdo->exec($createDatabase);
-    $pdo->exec("USE $dbname");
-
     // Usuwanie tabel
-    $dropTables = "DROP TABLE IF EXISTS type, accounts, auctions, category, file_to_auction, message, message_link";
+    $dropTables = "DROP TABLE IF EXISTS file_to_auction, message_link, message, auctions, category, accounts, type";
     $pdo->exec($dropTables);
 
     // Tworzenie tabeli type
@@ -62,7 +54,9 @@ try {
         date_start DATE,
         date_end DATE,
         selled TINYINT(1),
-        buyerid INT
+        buyerid INT,
+        price DOUBLE,
+        waluta VARCHAR (10)
     )";
     $pdo->exec($createAuctionTable);
 
@@ -77,10 +71,10 @@ try {
     // Tworzenie tabeli file_to_auction
     $createFileToAuctionTable = "CREATE TABLE IF NOT EXISTS file_to_auction (
         file_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        auction_id INT(11) NOT NULL,
+        auctionid INT(11) NOT NULL,
         filename VARCHAR(255) NOT NULL,
         file_path VARCHAR(255) NOT NULL,
-        FOREIGN KEY (auction_id) REFERENCES auctions(auctionid) ON DELETE CASCADE
+        FOREIGN KEY (auctionid) REFERENCES auctions(auctionid) ON DELETE CASCADE
     )";
     $pdo->exec($createFileToAuctionTable);
 
@@ -89,32 +83,23 @@ try {
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         mlid INT NOT NULL,
         date DATE DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        description TEXT
+        description TEXT,
+        auctionid INT NOT NULL,
+        FOREIGN KEY (auctionid) REFERENCES auctions(auctionid) ON DELETE CASCADE
     )";
     $pdo->exec($createMessageTable);
 
     // Tworzenie tabeli message_link
     $createMessageLinkTable = "CREATE TABLE IF NOT EXISTS message_link (
         mlid INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        auctionid INT NOT NULL,
         sellerid INT NOT NULL,
         buyerid INT NOT NULL,
-        auctionid INT NOT NULL
+        FOREIGN KEY (auctionid) REFERENCES auctions(auctionid) ON DELETE CASCADE,
+        FOREIGN KEY (sellerid) REFERENCES accounts(accountid),
+        FOREIGN KEY (buyerid) REFERENCES accounts(accountid)
     )";
     $pdo->exec($createMessageLinkTable);
-
-    // Wstawianie danych do tabeli category
-    $insertCategories = "INSERT INTO category (categoryid, name, in_tree)
-                    VALUES
-                        (1, 'Motoryzacja', 0),
-                        (3, 'Praca', 0),
-                        (4, 'Zdrowie i Uroda', 0),
-                        (5, 'Elektronika', 0),
-                        (6, 'Moda', 0),
-                        (7, 'Zwierzęta', 0),
-                        (8, 'Wypożyczalnia', 0),
-                        (9, 'Sport', 0),
-                        (10, 'Hobby', 0)";
-    $pdo->exec($insertCategories);
 
     echo "Baza danych została utworzona pomyślnie.";
 } catch (PDOException $e) {
