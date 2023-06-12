@@ -3,7 +3,7 @@ include_once "constant/header.php";
 require 'scripts/connect.php';
 
 // Sprawdzenie, czy przekazano account_id w GET
-if (isset($_GET['account_id'])) {
+if (isset($_GET[])) {
     $accountId = $_GET['account_id'];
 } elseif (isset($_SESSION['logged']['account_id'])) {
     $accountId = $_SESSION['logged']['account_id'];
