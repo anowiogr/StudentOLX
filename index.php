@@ -5,7 +5,10 @@
 	<body class="d-flex flex-column h-100">
 
 	<div class="container prelative">
-		<!--TU WKLEJ TREŚĆ STRONY-->
+	<?php
+header("Location: auction.php");
+exit;
+?>
 	</div>
 
 
