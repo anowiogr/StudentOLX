@@ -2,17 +2,18 @@
 include_once "constant/header.php";
 require 'scripts/connect.php';
 
+
 if (!isset($_SESSION['logged']['account_id'])) {
     // Przekierowanie na stronę logowania, jeśli brak zdefiniowanego ID konta w sesji
     header('Location: login.php');
     exit();
 }
-    
+
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $accountId = $_SESSION['account_id'];
+    $accountId = $_SESSION['logged']['account_id'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Pobranie wszystkich aukcji użytkownika
