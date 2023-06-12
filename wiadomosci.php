@@ -20,19 +20,13 @@ include_once "constant/header.php";
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="buy" role="tabpanel" aria-labelledby="messageBuy-tab">
                     <br />
-
-
-
+                    Twoje wiadomości dotyczące zakupów.
                 </div>
-
                 <div class="tab-pane fade" id="sell" role="tabpanel" aria-labelledby="messageSell-tab">
                     <br />
-
-
-
+                    Twoje wiadomości dotyczące przedmotów sprzedawanych.
                 </div>
             </div>
-
         </div>
 
 
