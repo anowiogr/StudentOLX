@@ -52,7 +52,7 @@ require 'scripts/connect.php';
          <input class="form-control" type='text' name='title' id='title' value='$auction[title]' disabled><br>
     
          <label for='tresc'>Treść:</label><br>
-         <textarea class="form-control" name='tresc' id='tresc' required>$description</textarea><br>
+         <textarea class="form-control" name='description' id='description' value='description' required>$description</textarea><br>
 
          <input type='hidden' name='account_id' value='$account_id'>
          <input type='hidden' name='auction_id' value='$auctionid'><!-- ID użytkownika, dla którego dodawane jest ogłoszenie-->

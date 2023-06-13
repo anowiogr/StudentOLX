@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'connect.php';
-print_r($_POST);
+//print_r($_POST);
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
