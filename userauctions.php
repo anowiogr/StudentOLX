@@ -48,6 +48,11 @@ try {
 
     if ($auctions) {
         foreach ($auctions as $auction) {
+            if($auction["veryfied"]==0){
+                $info="OCZEKUJE NA WERYFIKACJĘ";
+            }else{
+                $info="";
+            }
             echo <<< TABLELISTA
                 <div class="row box p-3">
                     <img class="aimg" src="images/nofoto.jpg" />
@@ -74,13 +79,7 @@ try {
                          </div>
                        <div class="ainfo ">Data wystawienia: $auction[date_start] </div>  
                     </div>
-                    
-                    
-                   
-                   
-                      
-                   
-                   
+                    <span class="text-danger">$info</span>
                 </div>
                 
                 <br>
@@ -103,8 +102,14 @@ try {
 
     if ($auctions) {
         foreach ($auctions as $auction) {
+            if($auction["veryfied"]==2){
+                $info="ODRZUCONE";
+            }else{
+                $info="";
+            }
             echo <<< TABLELISTA
                 <div class="row box p-3">
+                    
                     <img class="aimg" src="images/nofoto.jpg" />
                     
                     <div class="box-text" >
@@ -120,7 +125,7 @@ try {
                          </div>
                        <div class="ainfo ">Data wystawienia: $auction[date_start] </div>  
                     </div>
-
+                    <span class="text-secondary">$info</span>
                 </div>
                 
                 <br>
