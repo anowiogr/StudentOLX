@@ -85,14 +85,24 @@ try {
             echo <<< TABLELISTA
                 <div class="row box p-3">
                     <img class="aimg" src="images/nofoto.jpg" />
-                    <div class="box-text">
-                    <h3>
-                        <a class="atitle link-dark" href="auction.php?auction_id=$auction[auctionid]">$auction[title]</a></h3>
-                        
-                     </div>
-                   <div class="ainfo" width="100%">$auction[city],  Data wystawienia: $auction[date_start] </div>
+                    
+                    <div class="box-text" >
+                    
+                         <div style="width: 50%; float: left; ">
+                            <h3>
+                                <a class="atitle link-dark" style="text-decoration: none;" href="auction.php?auction_id=$auction[auctionid]">$auction[title]</a>
+                            </h3>
+                         </div>
+                         
+                         <div style="overflow: hidden; text-align: right;">
+                         <h3>CENA</h3>
+                           
+                         </div>
+                         
+                    </div>
+                    <div class="ainfo" style="text-align: right;">$auction[city],  Data wystawienia: $auction[date_start] </div>
+                
                 </div>
-                <br>
             TABLELISTA;
 
         }
