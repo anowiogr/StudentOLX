@@ -1,6 +1,7 @@
 <?php
 include_once "constant/header.php";
 require 'scripts/connect.php';
+
 ?>
 <body class="d-flex flex-column h-100">
 <div class="container prelative"><br>
@@ -12,7 +13,7 @@ if (isset($_GET['account_id'])) {
     $accountId = $_SESSION['logged']['account_id'];
 } else {
     // Przekierowanie na stronę logowania, jeśli brak account_id w GET i sesji
-    header('Location: login.php');
+    header('Location: index.php');
     exit();
 }
 try {

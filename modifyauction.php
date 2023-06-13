@@ -51,7 +51,7 @@ $auction_id = $_GET['auction_id'];
     if($auction) {
         // Wyświetlanie formularza
         echo <<<TABLEFORM
-         <form method='POST' action=''>
+         <form method='POST' action='scripts/modify.php'>
           <div class="form-row p-3">
          <label for='title'>Tytuł:</label><br>
          <input class="form-control"type='text' name='title' id='title' value='$auction[title]' required><br>
@@ -60,14 +60,15 @@ $auction_id = $_GET['auction_id'];
          <textarea class="form-control" name='description' id='description' required>$auction[description]</textarea><br>
          
          <label class="form-check-label" for='used'>Używany: </label>
-         <input class="form-check-input" type='checkbox' name='used' id='used' <?php echo "($auction[used] ? 'checked' : '')"; ?> <br>
+         <input class="form-check-input" type='checkbox' name='used' value="$auction[used]"  id='used' <?php echo "($auction[used] ? 'checked' : '')"; ?> <br>
     
          <label class="form-check-label"for='private'>Prywatny:</label>
-         <input class="form-check-input" type='checkbox' name='private' id='private' <?php echo "($auction[private] ? 'checked' : '')"; ?> <br>
+         <input class="form-check-input" type='checkbox' name='private' id='priv' value="$auction[private]" <?php echo "($auction[private] ? 'checked' : '')"; ?> <br>
     
          <input type='hidden' name='account_id' value='$account_id'> <!-- ID użytkownika, dla którego dodawane jest ogłoszenie-->
+         <input type='hidden' name='auction_id' value='$auction_id'>
             <br>
-         <button class="btn btn-secondary" type='submit' name='action' value='add'>Zmień</button>
+         <button class="btn btn-secondary" type='submit'>Zmień</button>
          </div>
         </form>
     TABLEFORM;
