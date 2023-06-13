@@ -98,9 +98,9 @@ try {
                          <h3>$auction[price]</h3>$auction[waluta]
                            
                          </div>
-                         
+                      <div class="ainfo" >$auction[city],  Data wystawienia: $auction[date_start] </div>   
                     </div>
-                    <div class="ainfo" style="text-align: right;">$auction[city],  Data wystawienia: $auction[date_start] </div>
+                    
                 
                 </div>
             TABLELISTA;
