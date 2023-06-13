@@ -75,7 +75,7 @@ try {
         }
     } else {
         // Pobranie wszystkich aukcji z podstawowymi informacjami
-        $query = "SELECT a.auctionid, a.title, a.selled, u.firstname, u.lastname, u.city, a.date_start FROM auctions a
+        $query = "SELECT a.auctionid, a.title, a.selled, u.firstname, u.lastname, u.city, a.date_start, a.price, a.waluta FROM auctions a
                   INNER JOIN accounts u ON a.accountid = u.accountid WHERE a.selled = 0";
         $stmt = $pdo->query($query);
         $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -95,7 +95,7 @@ try {
                          </div>
                          
                          <div style="overflow: hidden; text-align: right;">
-                         <h3>CENA</h3>
+                         <h3>$auction[price]</h3>$auction[waluta]
                            
                          </div>
                          
