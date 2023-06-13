@@ -35,11 +35,11 @@ try {
     echo "<div><a href='addauction.php' class='button'><button class='btn btn-secondary'>Dodaj ogłoszenie</button></a></div><br>";
 
     // Pobranie wszystkich ogłoszeń użytkownika wraz z nazwą kategorii
-    $query = "SELECT auctions.*, accounts.accountid, category.name AS category_name
+    $query = "SELECT auctions.*, accounts.accountid, category.name AS category_name, auctions.veryfied
               FROM auctions
               INNER JOIN accounts ON auctions.accountid = accounts.accountid
               LEFT JOIN category ON auctions.categoryid = category.categoryid
-              WHERE accounts.accountid = :accountid";
+              WHERE accounts.accountid = :accountid AND auctions.veryfied <> 2 AND auctions.selled = 0";
     $statement = $pdo->prepare($query);
     $statement->bindParam(':accountid', $accountId);
     $statement->execute();
@@ -86,7 +86,48 @@ try {
                 <br>
             TABLELISTA;
         }
-        echo "</table>";
+
+        echo "<hr><h4>NIEAKTYWNE</h4>";
+
+            // Pobranie aktywnych ogłoszeń użytkownika wraz z nazwą kategorii
+    $query = "SELECT auctions.*, accounts.accountid, category.name AS category_name
+              FROM auctions
+              INNER JOIN accounts ON auctions.accountid = accounts.accountid
+              LEFT JOIN category ON auctions.categoryid = category.categoryid
+              WHERE accounts.accountid = :accountid AND auctions.veryfied = 2 OR auctions.selled <> 0";
+    $statement = $pdo->prepare($query);
+    $statement->bindParam(':accountid', $accountId);
+    $statement->execute();
+
+    $auctions = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($auctions) {
+        foreach ($auctions as $auction) {
+            echo <<< TABLELISTA
+                <div class="row box p-3">
+                    <img class="aimg" src="images/nofoto.jpg" />
+                    
+                    <div class="box-text" >
+                    
+                         <div style="width: 50%; float: left; ">
+                            <h3>
+                                <a class="atitle link-dark" style="text-decoration: none;" href="auction.php?auction_id=$auction[auctionid]">$auction[title]</a>
+                            </h3>
+                         </div>
+                         
+                         <div style="overflow: hidden; text-align: right;">
+                            
+                         </div>
+                       <div class="ainfo ">Data wystawienia: $auction[date_start] </div>  
+                    </div>
+
+                </div>
+                
+                <br>
+            TABLELISTA;
+        }
+    }
+
     } else {
         echo "<p class='text-secondary p-3'><i>Nie masz jeszcze żadnych ogłoszeń, dodaj ogłoszenie i zarabiaj!</i></p>";
 
