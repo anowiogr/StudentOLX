@@ -3,9 +3,9 @@ require "constant/header.php";
 require 'scripts/connect.php';
 
 // Sprawdzenie czy użytkownik jest zalogowany
-if (!isset($_SESSION['logged']['account_id'])) {
+if (!isset($_SESSION['logged']['account_id'])||$_SESSION['logged']['account_id']==null) {
     // Przekierowanie użytkownika na stronę logowania lub inny odpowiedni komunikat
-    header("Location: login.php");
+    header("Location: index.php");
     exit();
 }
 

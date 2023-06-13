@@ -28,7 +28,7 @@ $account_id = $_SESSION["logged"]["account_id"];
          <form method='POST' action='scripts/newauction.php'>
           <div class="form-row p-3">
          <label for='title'>Tytuł:</label><br>
-         <input class="form-control"type='text' name='title' id='title' value='$title' required><br>
+         <input class="form-control" type='text' name='title' id='title' value='$title' required><br>
     
          <label for='description'>Opis:</label><br>
          <textarea class="form-control" name='description' id='description' required>$description</textarea><br>

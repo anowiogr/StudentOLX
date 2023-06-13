@@ -92,7 +92,7 @@
                                     <a class="nav-link" href="./messagelist.php">Wiadomości</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Administracja</a>
+                                    <a class="nav-link" href="./admin.php">Administracja</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="./userabout.php">Ustawienia</a>
