@@ -65,7 +65,7 @@
                    <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="./userauctions.php">Aukcje</a>
+                                <a class="nav-link" href="./userauctions.php">Twoje aukcje</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="./messagelist.php">Wiadomości</a>
@@ -86,7 +86,7 @@
                        <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
                             <ul class="navbar-nav mr-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="./userauctions.php">Aukcje</a>
+                                    <a class="nav-link" href="./userauctions.php">Twoje aukcje</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="./messagelist.php">Wiadomości</a>

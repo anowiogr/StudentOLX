@@ -15,42 +15,14 @@ $dateEnd = date('Y-m-d', strtotime('+2 weeks'));
 $account_id = $_SESSION["logged"]["account_id"];
 //print_r($_SESSION["logged"]);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['title'];
-    $description = $_POST['description'];
-    $used = isset($_POST['used']);
-    $private = isset($_POST['private']);
-    $dateStart = $_POST['date_start'];
-    $dateEnd = $_POST['date_end'];
-
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        if ($_POST['action'] === 'modify') {
-            // Modyfikowanie istniejącego ogłoszenia
-
-            $auctionId = $_POST['auction_id'];
-            $accountId = $_POST['account_id'];
-
-            // Aktualizacja ogłoszenia w bazie danych
-            $query = "UPDATE auctions SET title = :title, description = :description, used = :used, private = :private, date_start = :dateStart, date_end = :dateEnd WHERE auctionid = :auctionId";
-            $stmt = $pdo->prepare($query);
-            $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':description', $description);
-            $stmt->bindParam(':used', $used, PDO::PARAM_BOOL);
-            $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
-            $stmt->bindParam(':dateStart', $dateStart);
-            $stmt->bindParam(':dateEnd', $dateEnd);
-            $stmt->bindParam(':auctionId', $auctionId, PDO::PARAM_INT);
-            $stmt->execute();
-
-            echo "Ogłoszenie zostało zaktualizowane.";
-
     } catch (PDOException $e) {
         echo "Błąd połączenia: " . $e->getMessage();
     }
-} else {
+
     // Wyświetlanie formularza dodawania nowego ogłoszenia
     echo <<<TABLEFORM
          <form method='POST' action='scripts/newauction.php'>
@@ -75,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     TABLEFORM;
 
 
-}
 ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
