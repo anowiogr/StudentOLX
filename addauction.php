@@ -12,6 +12,8 @@ $used = false;
 $private = false;
 $dateStart = date('Y-m-d');
 $dateEnd = date('Y-m-d', strtotime('+2 weeks'));
+$account_id = $_SESSION["logged"]["account_id"];
+//print_r($_SESSION["logged"]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
@@ -44,32 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
 
             echo "Ogłoszenie zostało zaktualizowane.";
-        } else {
-            // Dodawanie nowego ogłoszenia
 
-            $accountId = $_POST['account_id'];
-
-            // Dodanie ogłoszenia do bazy danych
-            $query = "INSERT INTO auctions (title, description, used, private, date_start, date_end, accountid) VALUES (:title, :description, :used, :private, :dateStart, :dateEnd, :accountId)";
-            $stmt = $pdo->prepare($query);
-            $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':description', $description);
-            $stmt->bindParam(':used', $used, PDO::PARAM_BOOL);
-            $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
-            $stmt->bindParam(':dateStart', $dateStart);
-            $stmt->bindParam(':dateEnd', $dateEnd);
-            $stmt->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmt->execute();
-
-            echo "Ogłoszenie zostało dodane.";
-        }
     } catch (PDOException $e) {
         echo "Błąd połączenia: " . $e->getMessage();
     }
 } else {
     // Wyświetlanie formularza dodawania nowego ogłoszenia
     echo <<<TABLEFORM
-         <form method='POST' action='auction.php'>
+         <form method='POST' action='scripts/newauction.php'>
           <div class="form-row p-3">
          <label for='title'>Tytuł:</label><br>
          <input class="form-control"type='text' name='title' id='title' value='$title' required><br>
@@ -83,9 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
          <label class="form-check-label"for='private'>Prywatny:</label>
          <input class="form-check-input" type='checkbox' name='private' id='private' <?php echo "($private ? 'checked' : '')"; ?> <br>
     
-         <input type='hidden' name='account_id' value='1'> <!-- ID użytkownika, dla którego dodawane jest ogłoszenie-->
+         <input type='hidden' name='account_id' value='$account_id'> <!-- ID użytkownika, dla którego dodawane jest ogłoszenie-->
             <br>
-         <button class="btn btn-outline-secondary" type='submit' name='action' value='preview'>Podgląd</button>
          <button class="btn btn-secondary" type='submit' name='action' value='add'>Dodaj</button>
          </div>
         </form>
@@ -99,22 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
-<script>
-$(function() {
-  $('#date_start').datepicker({
-    dateFormat: 'yy-mm-dd',
-    minDate: 0,
-    onSelect: function(selectedDate) {
-      $('#date_end').datepicker('option', 'minDate', selectedDate);
-    }
-  });
 
-  $('#date_end').datepicker({
-    dateFormat: 'yy-mm-dd',
-    minDate: 0
-  });
-});
-</script>
 </div>
 </body>
 <?php
