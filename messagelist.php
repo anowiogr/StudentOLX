@@ -78,8 +78,11 @@ try {
                    // $title = $rowBuy[$title];
                 echo <<< TABLEMESSLIST
                 <tr>
-                    <th scope="row">
-                    <a class="text-dark p-3" style="text-decoration: none;" href="scripts/messview.php?aid=$rowBuy[auctionid]&bid=$rowBuy[buyerid]"> $rowBuy[firstname] $rowBuy[lastname]</a>
+                    <th scope="row p-3">
+                    <a class="text-dark" style="text-decoration: none;" href="scripts/mesview.php?aid=$rowBuy[auctionid]&bid=$rowBuy[buyerid]"> 
+                        <span>$rowBuy[title]</span><br>
+                        <span style="text-decoration: none; font-size: small; ">$rowBuy[firstname] $rowBuy[lastname]</span> 
+                    </a>
                     <br>
                     </th>
                 </tr>
@@ -92,7 +95,7 @@ try {
                     <br />
             </div>
             <div id="messview" style="width: 80%; float: left; overflow: hidden; padding: 0em 0em 0em 2em">
-                <table class="table table-striped ">
+                <table class="table table-striped">
                     <tbody>
                 <?php
                 // Wyświetlanie wiadomości od zainteresowanych (tresc)
@@ -104,10 +107,10 @@ try {
 
 
                         if($rowBuyM["answer"]==1){
-                        echo "<div style='font-size: 0.8em;'>".$rowBuyM["date"]."</div>
+                        echo "<div style='text-align: right; font-size: 0.6em;'>".$rowBuyM["date"]."</div>
                                 <div style='text-align: right;'>".$rowBuyM["description"]."</div>";
                         }else{
-                        echo "<div style='text-align: right; font-size: 0.8em;'>".$rowBuyM["date"]."</div>
+                        echo "<div style='font-size: 0.6em;'>".$rowBuyM["date"]."</div>
                         <div>".$rowBuyM["description"]."</div>";
                         }
 
@@ -118,17 +121,19 @@ try {
                 $description='';
                 echo <<<SENDMESS
                     <tr>
+                        <td>
                         <form method='POST' action='scripts/message.php'>
-                            <div class="form-row p-3">
-                                <textarea class="form-control col-md-10" name='description' id='description' value='description' required>$description</textarea><br>
+                            <div class="form-row p-3 text-right">
+                                <textarea class="form-control" name='description' id='description' value='description' required>$description</textarea><br>
                                 <input type='hidden' name='account_id' value='$account_id'>
-                                <a class="form-control col-md-2 btn btn-secondary" type='submit'>
+                                <a class="btn btn-secondary" type='submit'>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
                                         <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
                                     </svg>
                                 </a>
                             </div>
                         </form>
+                        </td>
                     </tr>
                 SENDMESS;
 
