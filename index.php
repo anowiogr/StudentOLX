@@ -31,7 +31,7 @@ include_once "constant/header.php";
 
 			include_once "scripts/connect.php";
 			try {
-				$stmt = $conn->prepare("SELECT * FROM `auctions` LEFT JOIN `category` ON auctions.`categoryid` = category.`categoryid` ORDER BY auctionid DESC LIMIT 4;");
+				$stmt = $conn->prepare("SELECT * FROM `auctions` LEFT JOIN `category` ON auctions.`categoryid` = category.`categoryid` WHERE `auctions`.`veryfied` = 1 AND auctions.selled = 0 ORDER BY auctionid DESC LIMIT 4;");
 				$stmt->execute();
 				$result = $stmt->get_result();
 

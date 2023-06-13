@@ -9,6 +9,11 @@ try {
 <div class="container prelative">
 
 <?php
+    if(isset($_SESSION['info']) && $_SESSION['info']<> null){
+
+        echo "<div class='alert alert-success' role='alert'>$_SESSION[info]</div>";
+        $_SESSION['info']=null;
+    }
     // Sprawdzenie, czy przesłano ID aukcji
     if (isset($_GET['auction_id'])) {
         $auctionId = $_GET['auction_id'];
@@ -59,12 +64,12 @@ try {
             echo '<br>';
             echo "<b>Sprzedający:</b> " . $auction['firstname'] . " " . $auction['lastname'] . "<br>";
             echo "<b>Telefon:</b> " . ($_SESSION["role"]=="guest" ?  "Zaloguj się aby zobaczyć nr telefonu" : $auction['phone']) ."<br><br>";
-            echo '<button class="btn btn-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
-                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
-                </svg>
-                Napisz wadomość
-            </button>';
+            echo "<a class='btn btn-secondary' href='newmessage.php?auction_id=$auctionId'>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-send' viewBox='0 0 16 16'>
+                        <path d='M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z'/>
+                    </svg>
+                    Napisz wadomość
+                 </a>";
             echo "</div></div>";
             ?>
 
