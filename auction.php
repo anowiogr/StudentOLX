@@ -76,26 +76,36 @@ try {
             echo "Aukcja o podanym ID nie istnieje.";
         }
     } else {
-            print_r($_POST["filter"]);
+
+                //print_r($_POST["categoryid"]);
+
                 //Sprawdź czy użyto filtra
-                if(isset($_POST["filter"])){
+                if(isset($_POST["search"] )&& $_POST["search"]<>null){
                     //Pobranie przefiltrowanych aukcji z podstawowymi informacjami
 
-                    $categoryid=$_POST["filter"]["categoryid"];
-                    $search=$_POST["filter"]["search"];
+                    $search="'%".$_POST["search"]."%'";
+                    //print_r($search."<br>");
 
                     $query = "SELECT * FROM auctions a
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
-                            WHERE a.selled = 0 AND a.veryfied = 1
-                            AND CASE 
-                                    WHEN :categoryid <> 0 THEN categoryid = :categoryid  
-                                    WHEN :searchbar <> '' THEN title LIKE :searchbar 
-                                END"; //WHEN :searchbar <> '' THEN description LIKE :searchbar
-                    $stmt = $pdo->query($query);
-                    $stmt->bindParam(':categoryid', $categoryid);
-                    $stmt->bindParam(':searchbar', $_POST[$search]);
-                    $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                WHERE a.selled = 0 AND a.veryfied = 1 
+                                AND a.title LIKE :searchbar
+                                OR a.description LIKE :searchbar";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->bindParam(':searchbar', $search);
 
+                    } elseif(isset($_POST["categoryid"] )&& $_POST["categoryid"]<>null) {
+                    //Pobranie przefiltrowanych aukcji z podstawowymi informacjami
+
+                    $categoryid = $_POST["categoryid"];
+                    print_r($categoryid . "<br>");
+
+                    $query = "SELECT * FROM auctions a
+                                LEFT JOIN accounts u ON a.accountid = u.accountid 
+                                WHERE a.selled = 0 AND a.veryfied = 1 
+                                AND a.categoryid = :categoryid";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->bindParam(':categoryid', $categoryid);
                 } else {
 
                     //Pobranie wszystkich aukcji z podstawowymi informacjami
@@ -104,9 +114,13 @@ try {
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
                             WHERE a.selled = 0 AND a.veryfied = 1";
                     $stmt = $pdo->query($query);
-                    $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
                 }
 
+                $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+                //print_r($auctions);
         // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
         foreach ($auctions as $auction) {
             echo <<< TABLELISTA

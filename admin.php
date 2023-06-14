@@ -43,6 +43,7 @@ if($user['account_type']<>101){
 
         // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
         foreach ($auctions as $auction) {
+
             echo <<< TABLELISTA
                 <div class="row box p-3">
                     <img class="aimg" src="images/nofoto.jpg" />
@@ -75,14 +76,13 @@ if($user['account_type']<>101){
                         <?php
 
                         // Pobranie wszystkich nowych userów
-                        $query1 = "SELECT * FROM `accounts` WHERE `verified`<> 1;";
+                        $query1 = "SELECT * FROM `accounts` WHERE `verified` = 0;";
                         $stmt1 = $pdo->query($query1);
                         $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
                         echo "<h5>Oczekujące</h5>";
                         // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
                         foreach ($newUsers as $newUser) {
-                            if($newUser["verified"]==0) {
 
                                 echo <<< TABLELISTAU
                             <div class="row box p-3">  
@@ -110,11 +110,21 @@ if($user['account_type']<>101){
                             
                             </div>
                         TABLELISTAU;
-                            }
+                        }
+                        ?>
+                        <br><hr>
+                        <h5>Odrzucone</h5>
+                        <?php
+                        // Pobranie wszystkich nowych userów
+                        $query1 = "SELECT * FROM `accounts` WHERE `verified` = 2;";
+                        $stmt1 = $pdo->query($query1);
+                        $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
-                            if($newUser["verified"]==2){
-                                echo "<br><hr><h5>Odrzucone</h5>";
-                                echo <<< TABLELISTAU1
+
+                        // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
+                        foreach ($newUsers as $newUser) {
+
+                            echo <<< TABLELISTAU
                             <div class="row box p-3">  
                             <br>                          
                                 <div class="box-text" >
@@ -137,10 +147,8 @@ if($user['account_type']<>101){
                                 
                             
                             </div>
-                        TABLELISTAU1;
-                            }
+                        TABLELISTAU;
                         }
-
                         ?>
                     </div>
     </div>
