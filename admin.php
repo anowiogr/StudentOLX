@@ -35,8 +35,12 @@ if($user['account_type']<>101){
 <?php
 
         // Pobranie wszystkich aukcji z podstawowymi informacjami
-        $query = "SELECT a.auctionid, a.title, a.selled, u.firstname, u.lastname, u.city, a.date_start, a.price, a.waluta FROM auctions a
-                  INNER JOIN accounts u ON a.accountid = u.accountid WHERE a.veryfied = 0";
+        $query = "SELECT 
+                    a.auctionid, a.title, a.selled, u.firstname, u.lastname, u.city, a.date_start, a.price, c.currency_name
+                    FROM auctions a
+                    LEFT JOIN accounts u ON a.accountid = u.accountid 
+                    LEFT JOIN currency c ON a.currencyid = c.currencyid
+                    WHERE a.veryfied = 0";
         $stmt = $pdo->query($query);
         $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -57,7 +61,7 @@ if($user['account_type']<>101){
                          </div>
                          
                          <div style="overflow: hidden; text-align: right;">
-                         <h3>$auction[price]</h3>$auction[waluta]<br>
+                         <h3>$auction[price]</h3>$auction[currency_name]<br>
                            <a href="scripts/modauction.php?auction_id=$auction[auctionid]&verifyed=true&id=$account_id" class="btn btn-success">Zatwierdź</a><!--wartość na 1-->
                            <a  href="scripts/modauction.php?auction_id=$auction[auctionid]&verifyed=false&id=$account_id" class="btn btn-danger">Odrzuć</a> <!--wartość na 2-->
                          </div><div class="ainfo" style="text-align: left;" >$auction[city],  Data wystawienia: $auction[date_start] </div>

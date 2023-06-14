@@ -85,6 +85,7 @@ try {
 
                     $query = "SELECT * FROM auctions a
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
+                                LEFT JOIN currency c ON a.currencyid = c.currencyid
                                 WHERE a.selled = 0 AND a.veryfied = 1 
                                 AND a.title LIKE :searchbar
                                 OR a.description LIKE :searchbar";
@@ -102,6 +103,7 @@ try {
 
                     $query = "SELECT * FROM auctions a
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
+                                LEFT JOIN currencyc ON a.currencyid = c.currencyid
                                 WHERE a.selled = 0 AND a.veryfied = 1 
                                 AND a.categoryid = :categoryid";
                     $stmt = $pdo->prepare($query);
@@ -112,6 +114,7 @@ try {
                 } else {
                     $query = "SELECT * FROM auctions a
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
+                                LEFT JOIN currency c ON a.currencyid = c.currencyid
                             WHERE a.selled = 0 AND a.veryfied = 1";
                     $stmt = $pdo->query($query);
                 }
@@ -135,7 +138,7 @@ try {
                          </div>
                          
                          <div style="overflow: hidden; text-align: right;">
-                         <h3>$auction[price]</h3>$auction[waluta]
+                         <h3>$auction[price]</h3>$auction[currency_name]
                          </div>
                       <div class="ainfo" style="text-align: left;" >$auction[city],  Data wystawienia: $auction[date_start] </div>   
                     </div>
