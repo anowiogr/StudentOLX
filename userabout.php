@@ -13,11 +13,6 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $accountId = $_SESSION['logged']['account_id'];
-    ?>
-<body class="d-flex flex-column h-100">
-
-<div class="container prelative">
-<?php
 
     // Pobranie istniejących informacji o użytkowniku
     $query = "SELECT accounts.*, type.type_name,
@@ -141,9 +136,6 @@ try {
 } catch (PDOException $e) {
     echo "Błąd połączenia: " . $e->getMessage();
 }
-?>
-</div>
-</body>
-    <?php
+
 require 'constant/footer.php';
 ?>

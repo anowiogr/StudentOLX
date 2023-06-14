@@ -1,12 +1,7 @@
 <?php
 include_once "constant/header.php";
-?>
 
-<body class="d-flex flex-column h-100">
 
-<div class="container prelative text-center">
-
-	<?php
 	if(isset($_SESSION["success"]) && $_SESSION["success"]<>null){
 		echo "<div class='alert alert-success' role='alert'>$_SESSION[success]</div>";
 		$_SESSION["success"]=null;
@@ -35,7 +30,7 @@ include_once "constant/header.php";
 			</div>
 			<?php
 
-			include_once "scripts/connect.php";
+			require "scripts/connect.php";
 			try {
 				$stmt = $conn->prepare("SELECT * FROM `auctions` LEFT JOIN `category` ON auctions.`categoryid` = category.`categoryid` WHERE `auctions`.`veryfied` = 1 AND auctions.selled = 0 ORDER BY auctionid DESC LIMIT 4;");
 				$stmt->execute();
@@ -70,7 +65,7 @@ include_once "constant/header.php";
 
 
 
-<div class="row p-4">
+<div class="row p-4 text-center">
 	<?php
 
 	try {
@@ -81,8 +76,10 @@ include_once "constant/header.php";
 		while ($category= $result->fetch_assoc()) {
 			echo <<< TABLECATEGORY
 				<div class="col-lg-4">
-					<svg class="bd-placeholder-img rounded-circle" width="60" height="60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
-					<h2 class="fw-normal">$category[name]</h2>
+					<a class="text-dark" style="text-decoration: none;" href="scripts/forward.php?categoryid=$category[categoryid]">
+						<svg class="bd-placeholder-img rounded-circle" width="60" height="60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
+						<h2 class="fw-normal">$category[name]</h2>
+					</a>
 				</div>
 				
 			TABLECATEGORY;
@@ -95,14 +92,6 @@ include_once "constant/header.php";
 	}
 	$stmt->close();
 	?></div>
-
-
-</div>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-</body>
 
 <?php
 include_once "constant/footer.php";

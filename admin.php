@@ -18,8 +18,6 @@ if($user['account_type']<>101){
     exit();
 }
 ?>
-<body class="d-flex flex-column h-100">
-<div class="container prelative">
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -37,14 +35,19 @@ if($user['account_type']<>101){
 <?php
 
         // Pobranie wszystkich aukcji z podstawowymi informacjami
-        $query = "SELECT a.auctionid, a.title, a.selled, u.firstname, u.lastname, u.city, a.date_start, a.price, a.waluta FROM auctions a
-                  INNER JOIN accounts u ON a.accountid = u.accountid WHERE a.veryfied = 0";
+        $query = "SELECT 
+                    a.auctionid, a.title, a.selled, u.firstname, u.lastname, u.city, a.date_start, a.price, c.currency_name
+                    FROM auctions a
+                    LEFT JOIN accounts u ON a.accountid = u.accountid 
+                    LEFT JOIN currency c ON a.currencyid = c.currencyid
+                    WHERE a.veryfied = 0";
         $stmt = $pdo->query($query);
         $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
         // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
         foreach ($auctions as $auction) {
+
             echo <<< TABLELISTA
                 <div class="row box p-3">
                     <img class="aimg" src="images/nofoto.jpg" />
@@ -58,7 +61,7 @@ if($user['account_type']<>101){
                          </div>
                          
                          <div style="overflow: hidden; text-align: right;">
-                         <h3>$auction[price]</h3>$auction[waluta]<br>
+                         <h3>$auction[price]</h3>$auction[currency_name]<br>
                            <a href="scripts/modauction.php?auction_id=$auction[auctionid]&verifyed=true&id=$account_id" class="btn btn-success">Zatwierdź</a><!--wartość na 1-->
                            <a  href="scripts/modauction.php?auction_id=$auction[auctionid]&verifyed=false&id=$account_id" class="btn btn-danger">Odrzuć</a> <!--wartość na 2-->
                          </div><div class="ainfo" style="text-align: left;" >$auction[city],  Data wystawienia: $auction[date_start] </div>
@@ -77,14 +80,13 @@ if($user['account_type']<>101){
                         <?php
 
                         // Pobranie wszystkich nowych userów
-                        $query1 = "SELECT * FROM `accounts` WHERE `verified`<> 1;";
+                        $query1 = "SELECT * FROM `accounts` WHERE `verified` = 0;";
                         $stmt1 = $pdo->query($query1);
                         $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
                         echo "<h5>Oczekujące</h5>";
                         // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
                         foreach ($newUsers as $newUser) {
-                            if($newUser["verified"]==0) {
 
                                 echo <<< TABLELISTAU
                             <div class="row box p-3">  
@@ -112,11 +114,21 @@ if($user['account_type']<>101){
                             
                             </div>
                         TABLELISTAU;
-                            }
+                        }
+                        ?>
+                        <br><hr>
+                        <h5>Odrzucone</h5>
+                        <?php
+                        // Pobranie wszystkich nowych userów
+                        $query1 = "SELECT * FROM `accounts` WHERE `verified` = 2;";
+                        $stmt1 = $pdo->query($query1);
+                        $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
-                            if($newUser["verified"]==2){
-                                echo "<br><hr><h5>Odrzucone</h5>";
-                                echo <<< TABLELISTAU1
+
+                        // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
+                        foreach ($newUsers as $newUser) {
+
+                            echo <<< TABLELISTAU
                             <div class="row box p-3">  
                             <br>                          
                                 <div class="box-text" >
@@ -139,30 +151,16 @@ if($user['account_type']<>101){
                                 
                             
                             </div>
-                        TABLELISTAU1;
-                            }
+                        TABLELISTAU;
                         }
-
                         ?>
                     </div>
+    </div>
 
  <?php
 } catch (PDOException $e) {
     die("Błąd połączenia lub tworzenia bazy danych: " . $e->getMessage());
 }
-?>
 
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
-                </div>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
-</div>
-</body>
-<?php
 require 'constant/footer.php';
 ?>

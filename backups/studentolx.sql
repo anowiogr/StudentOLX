@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 13 Cze 2023, 23:17
+-- Czas generowania: 14 Cze 2023, 23:59
 -- Wersja serwera: 10.4.27-MariaDB
 -- Wersja PHP: 8.2.0
 
@@ -31,8 +31,10 @@ CREATE TABLE `accounts` (
   `accountid` int(11) NOT NULL,
   `login` varchar(100) NOT NULL,
   `password` varchar(250) NOT NULL,
+  `registerdate` date NOT NULL DEFAULT current_timestamp(),
   `account_type` varchar(3) NOT NULL DEFAULT '222',
   `verified` tinyint(1) NOT NULL,
+  `whover` int(3) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(150) DEFAULT NULL,
   `email` varchar(250) DEFAULT NULL,
@@ -47,12 +49,12 @@ CREATE TABLE `accounts` (
 -- Zrzut danych tabeli `accounts`
 --
 
-INSERT INTO `accounts` (`accountid`, `login`, `password`, `account_type`, `verified`, `firstname`, `lastname`, `email`, `phone`, `address`, `codezip`, `city`, `country`) VALUES
-(1, 'Gandalf', '$argon2id$v=19$m=65536,t=4,p=1$MGpNTmV5V3gxeEpnbmwuRA$4EAcazJJNXYstsdtmz3UPJPZi+ngwKWMOcRWACWGGaM', '101', 1, 'Gandalf', 'Szary', 'gandalf@example.com', '123456789', 'Mroczna Dolina 1', '12-345', 'Minas Tirith', 'Gondor'),
-(2, 'Frodo', '$argon2id$v=19$m=65536,t=4,p=1$MGpNTmV5V3gxeEpnbmwuRA$4EAcazJJNXYstsdtmz3UPJPZi+ngwKWMOcRWACWGGaM', '222', 1, 'Frodo', 'Baggins', 'frodo@example.com', '987654321', 'Hobbiton 2', '98-765', 'Shire', 'Middle-earth'),
-(3, 'Yennefer', '$argon2id$v=19$m=65536,t=4,p=1$MGpNTmV5V3gxeEpnbmwuRA$4EAcazJJNXYstsdtmz3UPJPZi+ngwKWMOcRWACWGGaM', '222', 1, 'Yennefer', 'z Vengerbergu', 'yennefer@example.com', '555555555', 'Wyzima 3', '54-321', 'Redania', 'Księstwo Redanii'),
-(4, 'Geralt', '$argon2id$v=19$m=65536,t=4,p=1$MGpNTmV5V3gxeEpnbmwuRA$4EAcazJJNXYstsdtmz3UPJPZi+ngwKWMOcRWACWGGaM', '101', 1, 'Geralt', 'z Rivii', 'geralt@example.com', '777777777', 'Kaer Morhen 4', '01-234', 'Temeria', 'Królestwo Temerii'),
-(5, 'MikeW', '$argon2id$v=19$m=65536,t=4,p=1$NkxzSEhHQVkyblFlRWRrZw$ZhSvsxgQsVLjuwJCQcet8AmVJIbX9+dZzJGWavYzroc', '222', 0, 'Mike', 'Wazowski', 'mike@wazowski.com', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `accounts` (`accountid`, `login`, `password`, `registerdate`, `account_type`, `verified`, `whover`, `firstname`, `lastname`, `email`, `phone`, `address`, `codezip`, `city`, `country`) VALUES
+(1, 'Gandalf', '$argon2id$v=19$m=65536,t=4,p=1$MGpNTmV5V3gxeEpnbmwuRA$4EAcazJJNXYstsdtmz3UPJPZi+ngwKWMOcRWACWGGaM', '2023-02-01', '101', 1, 0, 'Gandalf', 'Szary', 'gandalf@example.com', '123456789', 'Mroczna Dolina 1', '12-345', 'Minas Tirith', 'Gondor'),
+(2, 'Frodo', '$argon2id$v=19$m=65536,t=4,p=1$MGpNTmV5V3gxeEpnbmwuRA$4EAcazJJNXYstsdtmz3UPJPZi+ngwKWMOcRWACWGGaM', '2023-02-15', '222', 1, 0, 'Frodo', 'Baggins', 'frodo@example.com', '987654321', 'Hobbiton 2', '98-765', 'Shire', 'Middle-earth'),
+(3, 'Yennefer', '$argon2id$v=19$m=65536,t=4,p=1$MGpNTmV5V3gxeEpnbmwuRA$4EAcazJJNXYstsdtmz3UPJPZi+ngwKWMOcRWACWGGaM', '2023-03-06', '222', 2, 4, 'Yennefer', 'z Vengerbergu', 'yennefer@example.com', '555555555', 'Wyzima 3', '54-321', 'Redania', 'Księstwo Redanii'),
+(4, 'Geralt', '$argon2id$v=19$m=65536,t=4,p=1$MGpNTmV5V3gxeEpnbmwuRA$4EAcazJJNXYstsdtmz3UPJPZi+ngwKWMOcRWACWGGaM', '2023-04-14', '101', 1, 0, 'Geralt', 'z Rivii', 'geralt@example.com', '777777777', 'Kaer Morhen 4', '01-234', 'Temeria', 'Królestwo Temerii'),
+(5, 'MikeW', '$argon2id$v=19$m=65536,t=4,p=1$NkxzSEhHQVkyblFlRWRrZw$ZhSvsxgQsVLjuwJCQcet8AmVJIbX9+dZzJGWavYzroc', '2023-06-14', '222', 0, 0, 'Mike', 'Wazowski', 'mike@wazowski.com', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -66,31 +68,32 @@ CREATE TABLE `auctions` (
   `categoryid` int(11) NOT NULL,
   `title` varchar(100) DEFAULT NULL,
   `description` text DEFAULT NULL,
-  `used` tinyint(1) DEFAULT NULL,
-  `private` tinyint(1) DEFAULT NULL,
-  `date_start` date DEFAULT NULL,
+  `used` tinyint(1) DEFAULT 0,
+  `private` tinyint(1) DEFAULT 0,
+  `date_start` date DEFAULT current_timestamp(),
   `date_end` date DEFAULT NULL,
   `veryfied` int(1) NOT NULL DEFAULT 0,
   `whover` int(3) NOT NULL,
   `selled` tinyint(1) DEFAULT 0,
   `buyerid` int(11) DEFAULT NULL,
   `price` double DEFAULT NULL,
-  `waluta` varchar(10) DEFAULT NULL
+  `currencyid` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Zrzut danych tabeli `auctions`
 --
 
-INSERT INTO `auctions` (`auctionid`, `accountid`, `categoryid`, `title`, `description`, `used`, `private`, `date_start`, `date_end`, `veryfied`, `whover`, `selled`, `buyerid`, `price`, `waluta`) VALUES
-(1, 1, 1, 'Miecz Glamdring', 'Potężny miecz używany przez Gandalfa w walce ze złem.', 0, 0, '2023-06-01', '2023-06-10', 1, 0, 0, NULL, 100, 'Srebro'),
-(2, 2, 2, 'Jeden Pierścień', 'Tajemniczy pierścień o ogromnej mocy.', 1, 0, '2023-06-02', '2023-06-11', 1, 0, 0, NULL, 200, 'Złoto'),
-(3, 3, 3, 'Amulet Yennefer', 'Magiczny amulet zwiększający moc czarów. xD', 0, 0, '2023-06-03', '2023-06-12', 1, 4, 0, NULL, 150, 'Złoto'),
-(4, 4, 4, 'Medalion Wiedźmina', 'Tajemniczy medalion dający wiedźminowi nadnaturalne zdolności.', 1, 1, '2023-06-04', '2023-06-13', 2, 4, 0, NULL, 120, 'Srebro'),
-(5, 1, 1, 'kawa', '1,2,3 i jest', 0, 1, '2023-06-13', '0000-00-00', 2, 4, 0, NULL, NULL, NULL),
-(11, 4, 2, 'Strój Wiedźmina', 'Najnowszy model, kompletny. Niezbędny każdemu Wiedźminowi.', NULL, 1, '2023-06-13', '2023-06-13', 1, 4, 0, NULL, NULL, NULL),
-(16, 5, 2, 'Zmienione ogłoszenie', 'yu2', NULL, NULL, '2023-06-13', '0000-00-00', 1, 4, 0, NULL, NULL, NULL),
-(17, 4, 0, 'Koń Wiedźmina', 'Mały przebieg, podzespoły sprawne, silnik na owies.', NULL, NULL, '2023-06-13', '0000-00-00', 0, 0, 0, NULL, NULL, NULL);
+INSERT INTO `auctions` (`auctionid`, `accountid`, `categoryid`, `title`, `description`, `used`, `private`, `date_start`, `date_end`, `veryfied`, `whover`, `selled`, `buyerid`, `price`, `currencyid`) VALUES
+(1, 1, 1, 'Miecz Glamdring', 'Potężny miecz używany przez Gandalfa w walce ze złem.', 0, 0, '2023-06-01', '2023-06-10', 1, 0, 0, NULL, 100, 2),
+(2, 2, 2, 'Jeden Pierścień', 'Tajemniczy pierścień o ogromnej mocy.', 1, 0, '2023-06-02', '2023-06-11', 1, 0, 0, NULL, 200, 1),
+(3, 3, 3, 'Amulet Yennefer', 'Magiczny amulet zwiększający moc czarów. xD', 0, 0, '2023-06-03', '2023-06-12', 2, 4, 0, NULL, 150, 1),
+(4, 4, 4, 'Medalion Wiedźmina', 'Tajemniczy medalion dający wiedźminowi nadnaturalne zdolności.', 1, 1, '2023-06-04', '2023-06-13', 2, 4, 0, NULL, 120, 2),
+(5, 1, 1, 'Kawa Gandalfa', '1,2,3 i jest', 0, 1, '2023-06-13', '0000-00-00', 1, 4, 0, NULL, 10, 4),
+(11, 4, 6, 'Strój Wiedźmina', 'Najnowszy model, kompletny. Niezbędny każdemu Wiedźminowi', 1, 1, '2023-06-13', '2023-06-13', 1, 4, 0, NULL, 30, 1),
+(17, 4, 7, 'Płotka', 'Mały przebieg, podzespoły sprawne, silnik na owies, stan bardzo dobry.', 0, 0, '2023-06-13', '0000-00-00', 0, 0, 0, NULL, 1200, 1),
+(19, 4, 1, 'Dorożka dwukonna', 'Do renowacji', 1, 1, '2023-06-14', '0000-00-00', 2, 4, 0, NULL, 250, 2),
+(20, 4, 4, 'Napój życia', 'Poprawia gojenie ran.', 0, 1, '2023-06-14', '2023-06-14', 1, 4, 0, NULL, 12, 3);
 
 -- --------------------------------------------------------
 
@@ -118,6 +121,27 @@ INSERT INTO `category` (`categoryid`, `name`, `in_tree`) VALUES
 (8, 'Wypożyczalnia', 0),
 (9, 'Sport', 0),
 (10, 'Hobby', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `currency`
+--
+
+CREATE TABLE `currency` (
+  `currencyid` int(10) NOT NULL,
+  `currency_name` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Zrzut danych tabeli `currency`
+--
+
+INSERT INTO `currency` (`currencyid`, `currency_name`) VALUES
+(1, 'złoto'),
+(2, 'srebro'),
+(3, 'miedź'),
+(4, 'diament');
 
 -- --------------------------------------------------------
 
@@ -248,6 +272,12 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`categoryid`);
 
 --
+-- Indeksy dla tabeli `currency`
+--
+ALTER TABLE `currency`
+  ADD PRIMARY KEY (`currencyid`);
+
+--
 -- Indeksy dla tabeli `file_to_auction`
 --
 ALTER TABLE `file_to_auction`
@@ -284,19 +314,25 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT dla tabeli `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `accountid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `accountid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT dla tabeli `auctions`
 --
 ALTER TABLE `auctions`
-  MODIFY `auctionid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `auctionid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT dla tabeli `category`
 --
 ALTER TABLE `category`
   MODIFY `categoryid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT dla tabeli `currency`
+--
+ALTER TABLE `currency`
+  MODIFY `currencyid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT dla tabeli `file_to_auction`
