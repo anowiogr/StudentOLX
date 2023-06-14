@@ -8,6 +8,19 @@ try {
 <body class="d-flex flex-column h-100">
 <div class="container prelative">
 
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="auctiontab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab" aria-controls="buy" aria-selected="true">Aukcje - weryfikacja</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="newusertab" data-bs-toggle="tab" data-bs-target="#sell" type="button" role="tab" aria-controls="sell" aria-selected="false">Konta - weryfikacja </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="buy" role="tabpanel" aria-labelledby="auctiontab">
+
 <?php
     $account_id = $_SESSION["logged"]["account_id"];
     //Sprawdzenie czy user jest adminem
@@ -93,7 +106,7 @@ try {
         $stmt = $pdo->query($query);
         $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                echo '<h3>Ogłoszenia czekające na weryfikację</h3><hr><br>';
+               // echo '<br><h3>Ogłoszenia czekające na weryfikację</h3><br>';
 
         // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
         foreach ($auctions as $auction) {
@@ -113,8 +126,8 @@ try {
                          <h3>$auction[price]</h3>$auction[waluta]<br>
                            <a href="scripts/modauction.php?auction_id=$auction[auctionid]&verifyed=true&id=$account_id" class="btn btn-success">Zatwierdź</a><!--wartość na 1-->
                            <a  href="scripts/modauction.php?auction_id=$auction[auctionid]&verifyed=false&id=$account_id" class="btn btn-danger">Odrzuć</a> <!--wartość na 2-->
-                         </div>
-                      <div class="ainfo" >$auction[city],  Data wystawienia: $auction[date_start] </div>   
+                         </div><div class="ainfo" style="text-align: left;" >$auction[city],  Data wystawienia: $auction[date_start] </div>
+                       
                     </div>
                     
                 
@@ -123,13 +136,18 @@ try {
 
         }
     }
+    ?>
+                    </div>
 
+
+                    <div class="tab-pane fade" id="sell" role="tabpanel" aria-labelledby="newusertab">
+                        <?php
 } catch (PDOException $e) {
     die("Błąd połączenia lub tworzenia bazy danych: " . $e->getMessage());
 }
 ?>
 
-
+                    </div>
 </div>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
