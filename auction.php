@@ -16,8 +16,9 @@ try {
         $auctionId = $_GET['auction_id'];
 
         // Pobranie informacji o wybranej aukcji
-        $query = "SELECT a.*, u.login, u.phone FROM auctions a
-                  INNER JOIN accounts u ON a.accountid = u.accountid
+        $query = "SELECT a.*, u.login, u.phone, c.currency_name FROM auctions a
+                  LEFT JOIN accounts u ON a.accountid = u.accountid
+                  LEFT JOIN currency c ON a.currencyid = c.currencyid
                   WHERE a.auctionid = :auctionId";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':auctionId', $auctionId, PDO::PARAM_INT);
@@ -40,36 +41,52 @@ try {
                         <img class="fill" src="images/nofoto.jpg" />
                     </div>
 
-                    <div class="p-3 mb-2 col-md-6 bg bg-dark text-white">
-            <?php
-            echo <<< TABLEAUCTIONU
-            <table>
-            <tr>
-                <td>Data wystawienia:</td>
-                <td>$auction[date_start]</td>
-            </tr>
-            <tr>
-                <th colspan="2"><h1>$auction[title]</h1></th>
-            </tr>
-            </table>          
-            TABLEAUCTIONU;
-            echo '<br><br>';
-            echo $auction['description'];
-            echo '<br><br>';
-            echo "<b>Używany: </b>" . ($auction['used'] ? 'Tak' : 'Nie') . "<br>";
-            echo "<b>Prywatny: </b>" . ($auction['private'] ? 'Tak' : 'Nie') . "<br>";
-            echo '<br>';
-            echo "<b>Sprzedający:</b> " . $auction['login']  ."<br>";
-            echo "<b>Telefon:</b> " . ($_SESSION["role"]=="guest" ?  "Zaloguj się aby zobaczyć nr telefonu" : $auction['phone']) ."<br><br>";
-            echo "<a class='btn btn-secondary' href='newmessage.php?auction_id=$auctionId'>
-                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-send' viewBox='0 0 16 16'>
-                        <path d='M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z'/>
-                    </svg>
-                    Napisz wadomość
-                 </a>";
-            echo "</div></div>";
-            ?>
+                    <div class="p-3 mb-2 col-md-6" style="text-align: right;">
 
+                            <h4>
+                                <b>Sprzedający:</b> <?php echo $auction["login"]; ?><br><br>
+                                <b>Telefon:</b> <?php echo ($_SESSION["role"]=="guest" ?  "Zaloguj się aby zobaczyć nr telefonu" : $auction['phone']); ?> <br><br>
+                            </h4>
+                            <a class='btn btn-secondary' <?php echo "href='newmessage.php?auction_id=$auctionId'"; ?> >
+                            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-send' viewBox='0 0 16 16'>
+                                <path d='M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z'/>
+                            </svg> Napisz wadomość </a>
+                            <br><br><br>
+                            <h2><?php echo $auction["price"]." ".$auction["currency_name"]; ?></h2>
+
+                    </div>
+
+                    <div>
+                        <p style="text-align: right; font-size: 0.8em;">Data wystawienia: <?php echo $auction["date_start"]; ?></p>
+                        <h1><i><?php echo $auction["title"]; ?></i></h1>
+                        <br>
+                        <span>
+                            <?php echo $auction["description"]; ?>
+                            <br><br>
+                            <?php
+                            echo "Używany: ";
+                            echo ($auction['used'] ?
+                                '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-toggle-on" viewBox="0 0 16 16">
+                                  <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+                                </svg>' :
+                                '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16">
+                                  <path d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z"/>
+                                </svg>');
+                            ?>
+                            <br>
+                            <?php
+                            echo "Prywatny: ";
+                            echo ($auction['private'] ?
+                                '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-toggle-on" viewBox="0 0 16 16">
+                                  <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+                                </svg>' :
+                                '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16">
+                                  <path d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z"/>
+                                </svg>');
+                            ?>
+                        </span>
+                    </div>
+                </div><br><br>
             <?php
 
         } else {
