@@ -13,8 +13,8 @@ foreach ($_POST as $value){
 require_once "connect.php";
 
 try {
-	$stmt = $conn->prepare("SELECT * FROM `accounts` WHERE email=?");
-	$stmt->bind_param("s", $_POST["email"]);
+	$stmt = $conn->prepare("SELECT * FROM `accounts` WHERE login = ? OR email=?");
+	$stmt->bind_param("ss", $_POST["email"],$_POST["email"]);
 	$stmt->execute();
 
 	$result = $stmt->get_result();

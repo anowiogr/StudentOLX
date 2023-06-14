@@ -55,7 +55,7 @@ ERROR;
     <div class="card-body">
       <form action="scripts/login.php" method="post">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Podaj email" name="email">
+          <input class="form-control" placeholder="Podaj login lub email" name="email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
