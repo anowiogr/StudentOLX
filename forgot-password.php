@@ -21,9 +21,9 @@
       <a href="./index.php" class="h1"><b>Studencki</b>OLX</a>
     </div>
     <div class="card-body">
-      <form action="recovery.php" method="post">
+      <form action="scripts/recovery.php" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Login">
+          <input type="text" class="form-control" placeholder="Login" name="login" required>
 
           <div class="input-group-append">
             <div class="input-group-text">
@@ -33,7 +33,7 @@
 
         </div>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" class="form-control" placeholder="Email" name="email" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -42,7 +42,7 @@
         </div>
 
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Hasło">
+          <input type="password" class="form-control" placeholder="Hasło" name="pass1" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Powtórz hasło">
+          <input type="password" class="form-control" placeholder="Powtórz hasło" name="pass2" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>

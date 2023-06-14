@@ -18,19 +18,15 @@ try {
 	$stmt->execute();
 
 	$result = $stmt->get_result();
-	//echo $result->num_rows;
+
 
 	if ($result->num_rows != 0){
-		//$_SESSION["success"] = "Prawidłowo zalo użytkownika ";
-		// "email istnieje";
 
 		$user = $result->fetch_assoc();
 		$stmt->close();
 
         $pass = password_hash($_POST["pass"], PASSWORD_ARGON2ID);
 
-		//print_r($user);
-        //print_r($pass);
         if($user["verified"]==1) {
             if (password_verify($_POST["pass"], $user["password"])) {
                 $_SESSION["logged"]["firstName"] = $user["firstname"];
@@ -57,14 +53,12 @@ try {
             echo "<script>history.back();</script>";
         }
 
-		//header("location: ???");
 	}else{
         $_SESSION["error"] = "Brak adresu email w bazie!";
         echo "<script>history.back();</script>";
 	}
 } catch (mysqli_sql_exception $e) {
 	$_SESSION["error"] = $e->getMessage();
-	//echo "<script>history.back();</script>";
 	echo "error";
 	exit();
 }
