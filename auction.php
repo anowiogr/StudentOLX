@@ -77,14 +77,11 @@ try {
         }
     } else {
 
-                //print_r($_POST["categoryid"]);
+                //Pobranie przefiltrowanych aukcji z podstawowymi informacjami
+                if(isset($_SESSION["filter"]["search"])&& $_SESSION["filter"]["search"]<>null&& $_SESSION["filter"]["search"]<>''){
 
-                //Sprawdź czy użyto filtra
-                if(isset($_POST["search"] )&& $_POST["search"]<>null){
-                    //Pobranie przefiltrowanych aukcji z podstawowymi informacjami
-
-                    $search="'%".$_POST["search"]."%'";
-                    //print_r($search."<br>");
+                    $searchbar="'%".$_SESSION["filter"]["search"]."%'";
+                    print_r($searchbar."<br>");
 
                     $query = "SELECT * FROM auctions a
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
@@ -92,13 +89,16 @@ try {
                                 AND a.title LIKE :searchbar
                                 OR a.description LIKE :searchbar";
                     $stmt = $pdo->prepare($query);
-                    $stmt->bindParam(':searchbar', $search);
+                    $stmt->bindParam(':searchbar', $searchbar);
+                    $stmt->execute();
 
-                    } elseif(isset($_POST["categoryid"] )&& $_POST["categoryid"]<>null) {
-                    //Pobranie przefiltrowanych aukcji z podstawowymi informacjami
+                    $_SESSION["filter"]["search"]=null;
 
-                    $categoryid = $_POST["categoryid"];
-                    print_r($categoryid . "<br>");
+                    } elseif(isset($_SESSION["filter"]["categoryid"])&& $_SESSION["filter"]["categoryid"]<>null) {
+
+
+                    $categoryid = $_SESSION["filter"]["categoryid"];
+                    //print_r($categoryid . "<br>");
 
                     $query = "SELECT * FROM auctions a
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
@@ -106,15 +106,14 @@ try {
                                 AND a.categoryid = :categoryid";
                     $stmt = $pdo->prepare($query);
                     $stmt->bindParam(':categoryid', $categoryid);
+                    $stmt->execute();
+                    $_SESSION["filter"]["categoryid"]=null;
+
                 } else {
-
-                    //Pobranie wszystkich aukcji z podstawowymi informacjami
-
                     $query = "SELECT * FROM auctions a
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
                             WHERE a.selled = 0 AND a.veryfied = 1";
                     $stmt = $pdo->query($query);
-
                 }
 
                 $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);

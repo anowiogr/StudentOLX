@@ -1,11 +1,7 @@
 <?php
 include_once "constant/header.php";
-?>
 
 
-
-
-	<?php
 	if(isset($_SESSION["success"]) && $_SESSION["success"]<>null){
 		echo "<div class='alert alert-success' role='alert'>$_SESSION[success]</div>";
 		$_SESSION["success"]=null;
@@ -34,7 +30,7 @@ include_once "constant/header.php";
 			</div>
 			<?php
 
-			include_once "scripts/connect.php";
+			require "scripts/connect.php";
 			try {
 				$stmt = $conn->prepare("SELECT * FROM `auctions` LEFT JOIN `category` ON auctions.`categoryid` = category.`categoryid` WHERE `auctions`.`veryfied` = 1 AND auctions.selled = 0 ORDER BY auctionid DESC LIMIT 4;");
 				$stmt->execute();
@@ -81,7 +77,7 @@ include_once "constant/header.php";
 			echo <<< TABLECATEGORY
 				<div class="col-lg-4">
 					<a class="text-dark" style="text-decoration: none;" href="scripts/forward.php?categoryid=$category[categoryid]">
-						<svg class="bd-placeholder-img rounded-circle" width="60" height="60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
+						<svg class="bd-placeholder-img rounded-circle" width="60" height="60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
 						<h2 class="fw-normal">$category[name]</h2>
 					</a>
 				</div>

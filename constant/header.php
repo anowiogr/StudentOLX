@@ -116,7 +116,7 @@
         $searchbar='';
         echo <<< SEARCHBAR
 
-            <form method='POST' action='auction.php'>
+            <form method='GET' action='scripts/forward.php'>
                 <table  style="width: 100%; text-align: center;">
                     <tr>
                         <td>
