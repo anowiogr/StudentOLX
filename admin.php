@@ -81,10 +81,12 @@ if($user['account_type']<>101){
                         $stmt1 = $pdo->query($query1);
                         $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
-
+                        echo "<h5>Oczekujące</h5>";
                         // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
                         foreach ($newUsers as $newUser) {
-                            echo <<< TABLELISTAU
+                            if($newUser["verified"]==0) {
+
+                                echo <<< TABLELISTAU
                             <div class="row box p-3">  
                             <br>                          
                                 <div class="box-text" >
@@ -110,7 +112,35 @@ if($user['account_type']<>101){
                             
                             </div>
                         TABLELISTAU;
+                            }
 
+                            if($newUser["verified"]==2){
+                                echo "<br><hr><h5>Odrzucone</h5>";
+                                echo <<< TABLELISTAU1
+                            <div class="row box p-3">  
+                            <br>                          
+                                <div class="box-text" >
+                                
+                                     <div style="width: 50%; float: left; ">
+                                        <h3>$newUser[login]</h3>
+                                        <p>
+                                            $newUser[firstname] $newUser[lastname]
+                                            <br>
+                                            <i style="font-size: 0.9em">$newUser[email]</i>
+                                        </p>
+                                     </div>
+                                     
+                                     <div style="overflow: hidden; text-align: right;">
+                                       <p style="font-size: 0.7em;" > Data rejestracji: $newUser[registerdate] </p>
+                                     </div>
+                                     
+                                   
+                                </div>
+                                
+                            
+                            </div>
+                        TABLELISTAU1;
+                            }
                         }
 
                         ?>
