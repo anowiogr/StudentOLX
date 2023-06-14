@@ -1,0 +1,58 @@
+.usunbox{
+    visibility: hidden;
+}
+.usunbox .show{
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+.prelative{
+    margin-top: 50px;
+}
+.box{
+    border-bottom: 1px solid #212121;
+    box-shadow: 2px 2px 5px #212121;
+    padding: 5px;
+    
+}
+.box::after{
+    content:'';
+    display: block;
+    clear: both;
+}
+.aimg{
+    float: left;
+    height: 10%;
+    width: 10%;
+    max-width: 100px;
+    max-height: 100px;
+}
+.box-text{
+    float: right;
+    width: 90%;
+    
+}
+.atitle{
+    float: left;
+}
+.ainfo{
+    margin:2px;
+    clear: both;
+    display: block;
+    font-size: 10px;
+    text-align: right;
+}
+.aprice{
+     float: right;
+}
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+.fill img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%
+}
