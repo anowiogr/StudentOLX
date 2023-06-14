@@ -21,8 +21,17 @@
       <a href="./index.php" class="h1"><b>Studencki</b>OLX</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Wpisz adres email</p>
-      <form action="recover-password.html" method="post">
+      <form action="recovery.php" method="post">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Login">
+
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+
+        </div>
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
@@ -31,9 +40,27 @@
             </div>
           </div>
         </div>
+
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Hasło">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Powtórz hasło">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-secondary btn-block">Przypomnij hasło</button>
+            <button type="submit" class="btn btn-secondary btn-block">Zmień hasło</button>
           </div>
           <!-- /.col -->
         </div>
