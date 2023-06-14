@@ -42,7 +42,7 @@ try {
     $stmt->execute();
 
 	if ($stmt->affected_rows != 0){
-		$_SESSION["success"] = "Prawidłowo dodano użytkownika";
+		$_SESSION["success"] = "Zostałeś zarejestrowany, poczekaj na weryfikację administratora";
 		header("location: ../");
 	}
 } catch (mysqli_sql_exception $e) {

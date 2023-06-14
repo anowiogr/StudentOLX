@@ -6,6 +6,12 @@ include_once "constant/header.php";
 
 <div class="container prelative text-center">
 
+	<?php
+	if(isset($_SESSION["success"]) && $_SESSION["success"]<>null){
+		echo "<div class='alert alert-success' role='alert'>$_SESSION[success]</div>";
+		$_SESSION["success"]=null;
+	}
+	?>
 
 	<div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel" data-bs-theme="dark">
 		<div class="carousel-indicators">

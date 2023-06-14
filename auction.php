@@ -19,7 +19,7 @@ try {
         $auctionId = $_GET['auction_id'];
 
         // Pobranie informacji o wybranej aukcji
-        $query = "SELECT a.*, u.firstname, u.lastname, u.phone FROM auctions a
+        $query = "SELECT a.*, u.login, u.phone FROM auctions a
                   INNER JOIN accounts u ON a.accountid = u.accountid
                   WHERE a.auctionid = :auctionId";
         $stmt = $pdo->prepare($query);
@@ -62,7 +62,7 @@ try {
             echo "<b>Używany: </b>" . ($auction['used'] ? 'Tak' : 'Nie') . "<br>";
             echo "<b>Prywatny: </b>" . ($auction['private'] ? 'Tak' : 'Nie') . "<br>";
             echo '<br>';
-            echo "<b>Sprzedający:</b> " . $auction['firstname'] . " " . $auction['lastname'] . "<br>";
+            echo "<b>Sprzedający:</b> " . $auction['login']  ."<br>";
             echo "<b>Telefon:</b> " . ($_SESSION["role"]=="guest" ?  "Zaloguj się aby zobaczyć nr telefonu" : $auction['phone']) ."<br><br>";
             echo "<a class='btn btn-secondary' href='newmessage.php?auction_id=$auctionId'>
                     <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-send' viewBox='0 0 16 16'>
