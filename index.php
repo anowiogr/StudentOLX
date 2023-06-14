@@ -2,9 +2,8 @@
 include_once "constant/header.php";
 ?>
 
-<body class="d-flex flex-column h-100">
 
-<div class="container prelative text-center">
+
 
 	<?php
 	if(isset($_SESSION["success"]) && $_SESSION["success"]<>null){
@@ -70,7 +69,7 @@ include_once "constant/header.php";
 
 
 
-<div class="row p-4">
+<div class="row p-4 text-center">
 	<?php
 
 	try {
@@ -95,14 +94,6 @@ include_once "constant/header.php";
 	}
 	$stmt->close();
 	?></div>
-
-
-</div>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-</body>
 
 <?php
 include_once "constant/footer.php";

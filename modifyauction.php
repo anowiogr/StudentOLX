@@ -1,11 +1,7 @@
 <?php
 require 'constant/header.php';
 require 'scripts/connect.php';
-?>
-<body class="d-flex flex-column h-100">
 
-<div class="container prelative">
-<?php
 
 $account_id = $_SESSION["logged"]["account_id"];
 //print_r($_SESSION["logged"]);
@@ -74,15 +70,5 @@ $auction_id = $_GET['auction_id'];
     TABLEFORM;
     }
 
-?>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-
-
-</div>
-</body>
-<?php
 include_once "constant/footer.php";
 ?>

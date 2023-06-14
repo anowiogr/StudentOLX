@@ -4,16 +4,13 @@ require "scripts/connect.php";
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-?>
-<body class="d-flex flex-column h-100">
-<div class="container prelative">
 
-<?php
     if(isset($_SESSION['info']) && $_SESSION['info']<> null){
 
         echo "<div class='alert alert-success' role='alert'>$_SESSION[info]</div>";
         $_SESSION['info']=null;
     }
+
     // Sprawdzenie, czy przesłano ID aukcji
     if (isset($_GET['auction_id'])) {
         $auctionId = $_GET['auction_id'];
@@ -79,11 +76,36 @@ try {
             echo "Aukcja o podanym ID nie istnieje.";
         }
     } else {
-        // Pobranie wszystkich aukcji z podstawowymi informacjami
-        $query = "SELECT a.auctionid, a.title, a.selled, u.firstname, u.lastname, u.city, a.date_start, a.price, a.waluta FROM auctions a
-                  INNER JOIN accounts u ON a.accountid = u.accountid WHERE a.selled = 0 AND a.veryfied = 1";
-        $stmt = $pdo->query($query);
-        $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            print_r($_POST["filter"]);
+                //Sprawdź czy użyto filtra
+                if(isset($_POST["filter"])){
+                    //Pobranie przefiltrowanych aukcji z podstawowymi informacjami
+
+                    $categoryid=$_POST["filter"]["categoryid"];
+                    $search=$_POST["filter"]["search"];
+
+                    $query = "SELECT * FROM auctions a
+                                LEFT JOIN accounts u ON a.accountid = u.accountid 
+                            WHERE a.selled = 0 AND a.veryfied = 1
+                            AND CASE 
+                                    WHEN :categoryid <> 0 THEN categoryid = :categoryid  
+                                    WHEN :searchbar <> '' THEN title LIKE :searchbar 
+                                END"; //WHEN :searchbar <> '' THEN description LIKE :searchbar
+                    $stmt = $pdo->query($query);
+                    $stmt->bindParam(':categoryid', $categoryid);
+                    $stmt->bindParam(':searchbar', $_POST[$search]);
+                    $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                } else {
+
+                    //Pobranie wszystkich aukcji z podstawowymi informacjami
+
+                    $query = "SELECT * FROM auctions a
+                                LEFT JOIN accounts u ON a.accountid = u.accountid 
+                            WHERE a.selled = 0 AND a.veryfied = 1";
+                    $stmt = $pdo->query($query);
+                    $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
 
         // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
         foreach ($auctions as $auction) {
@@ -102,7 +124,7 @@ try {
                          <div style="overflow: hidden; text-align: right;">
                          <h3>$auction[price]</h3>$auction[waluta]
                          </div>
-                      <div class="ainfo" >$auction[city],  Data wystawienia: $auction[date_start] </div>   
+                      <div class="ainfo" style="text-align: left;" >$auction[city],  Data wystawienia: $auction[date_start] </div>   
                     </div>
                     
                 
@@ -112,23 +134,10 @@ try {
         } echo "<br>";
     }
 
+
 } catch (PDOException $e) {
     die("Błąd połączenia lub tworzenia bazy danych: " . $e->getMessage());
 }
-?>
 
-
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
-                </div>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
-</div>
-</body>
-<?php
 require 'constant/footer.php';
 ?>
