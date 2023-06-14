@@ -120,7 +120,7 @@ try {
 
                     $query = "SELECT * FROM auctions a
                                 LEFT JOIN accounts u ON a.accountid = u.accountid 
-                                LEFT JOIN currencyc ON a.currencyid = c.currencyid
+                                LEFT JOIN currency c ON a.currencyid = c.currencyid
                                 WHERE a.selled = 0 AND a.veryfied = 1 
                                 AND a.categoryid = :categoryid";
                     $stmt = $pdo->prepare($query);
