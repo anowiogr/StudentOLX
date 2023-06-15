@@ -52,7 +52,7 @@ require 'scripts/connect.php';
          <textarea class="form-control" name='description' id='description' value='description' required>$description</textarea><br>
 
          <input type='hidden' name='account_id' value='$account_id'>
-         <input type='hidden' name='auction_id' value='$auctionid'><!-- ID użytkownika, dla którego dodawane jest ogłoszenie-->
+         <input type='hidden' name='auction_id' value='$auctionid'>
             <br>
          <button class="btn btn-secondary" type='submit'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">

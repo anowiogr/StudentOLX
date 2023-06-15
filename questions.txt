@@ -1,4 +1,3 @@
 Zapytania:
 1. Przypadek searchbar -> SQL wywołana na BD działa bez problemu, ale ta sama SQL wywołana z PHP nie daje wyników.
 2. Jak po przekierowaniu strony www ustawić na .active inny tab niż domyślny (czy jest możliwe bez JS)?
-3. Brak działającego dropdown

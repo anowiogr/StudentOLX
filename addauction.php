@@ -18,7 +18,6 @@ $private = false;
 $account_id = $_SESSION["logged"]["account_id"];
 
 
-    // Wyświetlanie formularza dodawania nowego ogłoszenia
 ?>
          <form method='POST' action='scripts/newauction.php'>
          <table class="table">

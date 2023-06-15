@@ -21,16 +21,19 @@ if($user['account_type']<>101){
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="auctiontab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab" aria-controls="buy" aria-selected="true">Aukcje - weryfikacja</button>
+            <button class="nav-link active" id="auctiontab" data-bs-toggle="tab" data-bs-target="#auction" type="button" role="tab" aria-controls="auction" aria-selected="true">Aukcje - weryfikacja</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="newusertab" data-bs-toggle="tab" data-bs-target="#sell" type="button" role="tab" aria-controls="sell" aria-selected="false">Konta - weryfikacja </button>
+            <button class="nav-link" id="newusertab" data-bs-toggle="tab" data-bs-target="#newuser" type="button" role="tab" aria-controls="newuser" aria-selected="false">Konta - weryfikacja </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="activeusertab" data-bs-toggle="tab" data-bs-target="#activeuser" type="button" role="tab" aria-controls="activeuser" aria-selected="false">Konta </button>
         </li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
 
-        <div class="tab-pane fade show active" id="buy" role="tabpanel" aria-labelledby="auctiontab"><br>
+        <div class="tab-pane fade show active" id="auction" role="tabpanel" aria-labelledby="auction"><br>
 
 <?php
 
@@ -75,7 +78,7 @@ if($user['account_type']<>101){
         }
     ?>
                     </div>
-                    <div class="tab-pane fade" id="sell" role="tabpanel" aria-labelledby="newusertab">
+                    <div class="tab-pane fade" id="newuser" role="tabpanel" aria-labelledby="newusertab">
                         <br>
                         <?php
 
@@ -85,7 +88,7 @@ if($user['account_type']<>101){
                         $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
                         echo "<h5>Oczekujące</h5>";
-                        // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
+
                         foreach ($newUsers as $newUser) {
 
                                 echo <<< TABLELISTAU
@@ -119,13 +122,12 @@ if($user['account_type']<>101){
                         <br><hr>
                         <h5>Odrzucone</h5>
                         <?php
-                        // Pobranie wszystkich nowych userów
+                        // Pobranie wszystkich odrzuconych userów
                         $query1 = "SELECT * FROM `accounts` WHERE `verified` = 2;";
                         $stmt1 = $pdo->query($query1);
                         $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
 
-                        // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
                         foreach ($newUsers as $newUser) {
 
                             echo <<< TABLELISTAU
@@ -154,7 +156,47 @@ if($user['account_type']<>101){
                         TABLELISTAU;
                         }
                         ?>
+
                     </div>
+            <div class="tab-pane fade" id="activeuser" role="tabpanel" aria-labelledby="activeuser">
+                <?php
+
+                        // Pobranie wszystkich nowych userów
+                        $query1 = "SELECT * FROM `accounts` WHERE `verified` = 1;";
+                        $stmt1 = $pdo->query($query1);
+                        $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+                        foreach ($newUsers as $newUser) {
+
+                                echo <<< TABLELISTAU
+                            <div class="row box p-3">  
+                            <br>                          
+                                <div class="box-text" >
+                                
+                                     <div style="width: 50%; float: left; ">
+                                        <h3>$newUser[login]</h3>
+                                        <p>
+                                            $newUser[firstname] $newUser[lastname]
+                                            <br>
+                                            <i style="font-size: 0.9em">$newUser[email]</i>
+                                        </p>
+                                     </div>
+                                     
+                                     <div style="overflow: hidden; text-align: right;">
+                                       <p style="font-size: 0.7em;" > Data rejestracji: $newUser[registerdate] </p>
+                                     </div>
+                                     
+                                   
+                                </div>
+                                
+                            
+                            </div>
+                        TABLELISTAU;
+                        }
+                        ?>
+            </div>
+
+
     </div>
 
  <?php

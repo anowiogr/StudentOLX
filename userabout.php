@@ -3,7 +3,6 @@ require 'constant/header.php';
 require 'scripts/connect.php';
 
 if (!isset($_SESSION['logged']['account_id'])) {
-    // Przekierowanie na stronę logowania, jeśli brak zdefiniowanego ID konta w sesji
     header('Location: login.php');
     exit();
 }
