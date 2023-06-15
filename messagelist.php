@@ -1,17 +1,16 @@
 <?php
 require "constant/header.php";
 require 'scripts/connect.php';
-//print_r($_SESSION['logged']['account_id']);
+
 // Sprawdzenie czy użytkownik jest zalogowany
 if (!isset($_SESSION['logged']['account_id'])||$_SESSION['logged']['account_id']==null) {
-    // Przekierowanie użytkownika na stronę logowania lub inny odpowiedni komunikat
     header("Location: index.php");
-    //exit();
+
 }
 
-// Odczytanie account_id z sesji
+
 $account_id = $_SESSION['logged']['account_id'];
-//print_r($account_id);
+
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -62,6 +61,7 @@ try {
 
         <div class="tab-content" id="myTabContent">
 
+            <!--WIADOMOŚCI OD UZYTKOWNIKÓW-->
             <div class="tab-pane fade show active" id="buy" role="tabpanel" aria-labelledby="messageBuy-tab">
                 <div style="width: 20%; float: left;">
                                 <table class="table">

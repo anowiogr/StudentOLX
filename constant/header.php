@@ -28,21 +28,17 @@
 
 
 
-       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+       <div role="navigation" class="navbar navbar-expand-lg navbar-dark bg-dark">
            <div class="container">
             <a class="navbar-brand" href="./index.php"><img src="./images/icon.png" class="bi" width="40" height="40" /></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
+               <div class="collapse navbar-collapse text-secondary justify-content-end" id="menu">
         <?php
             if($_SESSION["role"]=="guest"){
                 ?>
-
-
-
-               <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
-                    <ul class="navbar-nav mr-auto">
+                   <ul class="navbar-nav">
                         <li class="nav-item">
                             <a href="./login.php"><button type="button" class="btn btn-outline-light me-2">Zaloguj</button></a>
                         </li>
@@ -51,17 +47,10 @@
                         </li>
                     </ul>
 
-
-
-
-
-
         <?php
             }elseif ($_SESSION["role"]=="user"){
         ?>
-
-                   <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
-                        <ul class="navbar-nav mr-auto">
+                        <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link" href="./userauctions.php">Twoje aukcje</a>
                             </li>
@@ -76,13 +65,11 @@
                             </li>
                         </ul>
 
-
                 <?php
         }elseif ($_SESSION["role"]=="admin"){
         ?>
 
-                       <div class="collapse navbar-collapse text-secondary justify-content-end" id="navbar-menu">
-                            <ul class="navbar-nav mr-auto">
+                            <ul class="navbar-nav">
                                 <li class="nav-item">
                                     <a class="nav-link" href="./userauctions.php">Twoje aukcje</a>
                                 </li>
@@ -105,7 +92,7 @@
         ?>
     </div>
   </div>
-</nav>
+</div>
 
 <body class="d-flex flex-column h-100">
     <div class="container">

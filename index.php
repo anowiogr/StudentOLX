@@ -32,7 +32,6 @@ include_once "constant/header.php";
 
 			require "scripts/connect.php";
 			try {
-				$conn = new mysqli($host, $user, $password, $dbname);
 
 				$stmt = $conn->prepare("SELECT * FROM `auctions` LEFT JOIN `category` ON auctions.`categoryid` = category.`categoryid` WHERE `auctions`.`veryfied` = 1 AND auctions.selled = 0 ORDER BY auctionid DESC LIMIT 4;");
 				$stmt->execute();
