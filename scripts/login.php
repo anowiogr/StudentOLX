@@ -1,6 +1,5 @@
 <?php
 session_start();
-//print_r($_POST);
 
 foreach ($_POST as $value){
 	if (empty($value)){

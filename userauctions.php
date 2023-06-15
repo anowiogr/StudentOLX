@@ -3,13 +3,13 @@ include_once "constant/header.php";
 require 'scripts/connect.php';
 
 
-// Sprawdzenie, czy przekazano account_id w GET
+
 if (isset($_GET['account_id'])) {
     $accountId = $_GET['account_id'];
 } elseif (isset($_SESSION['logged']['account_id'])) {
     $accountId = $_SESSION['logged']['account_id'];
 } else {
-    // Przekierowanie na stronę logowania, jeśli brak account_id w GET i sesji
+
     header('Location: index.php');
     exit();
 }
@@ -27,11 +27,10 @@ try {
 
     if ($user) {
         $username = $user['firstname'] . ' ' . $user['lastname'];
-        //echo "<h2>Ogłoszenia użytkownika: " . $username . "</h2>";
     }
     echo "<div><a href='addauction.php' class='button'><button class='btn btn-secondary'>Dodaj ogłoszenie</button></a></div><br>";
 
-    // Pobranie wszystkich ogłoszeń użytkownika wraz z nazwą kategorii
+    // Pobranie wszystkich ogłoszeń użytkownika
     $query = "SELECT auctions.*, accounts.accountid, category.name AS category_name, auctions.veryfied
               FROM auctions
               INNER JOIN accounts ON auctions.accountid = accounts.accountid
@@ -85,7 +84,7 @@ try {
 
         echo "<hr><h4>NIEAKTYWNE</h4>";
 
-            // Pobranie aktywnych ogłoszeń użytkownika wraz z nazwą kategorii
+            // Pobranie nieaktywnych ogłoszeń użytkownika
     $query = "SELECT auctions.*, accounts.accountid, category.name AS category_name
               FROM auctions
               INNER JOIN accounts ON auctions.accountid = accounts.accountid

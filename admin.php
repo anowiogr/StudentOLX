@@ -85,7 +85,7 @@ if($user['account_type']<>101){
                         $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
                         echo "<h5>Oczekujące</h5>";
-                        // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
+
                         foreach ($newUsers as $newUser) {
 
                                 echo <<< TABLELISTAU
@@ -119,13 +119,12 @@ if($user['account_type']<>101){
                         <br><hr>
                         <h5>Odrzucone</h5>
                         <?php
-                        // Pobranie wszystkich nowych userów
+                        // Pobranie wszystkich odrzuconych userów
                         $query1 = "SELECT * FROM `accounts` WHERE `verified` = 2;";
                         $stmt1 = $pdo->query($query1);
                         $newUsers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
 
-                        // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
                         foreach ($newUsers as $newUser) {
 
                             echo <<< TABLELISTAU

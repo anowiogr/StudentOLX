@@ -4,7 +4,6 @@ require 'scripts/connect.php';
 
 
 $account_id = $_SESSION["logged"]["account_id"];
-//print_r($_SESSION["logged"]);
 
 
 $auction_id = $_GET['auction_id'];
@@ -27,7 +26,7 @@ $auction_id = $_GET['auction_id'];
     }
 
     if($auction) {
-        // Wyświetlanie formularza
+        // Wyświetlanie formularza modyfikacji
 ?>
         <form method='POST' action='scripts/modify.php'>
             <table class="table">

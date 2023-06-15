@@ -6,9 +6,6 @@
         $_SESSION["role"]="guest";
     }
 
-//do wywalenia
-//print_r($_SESSION['logged']);
-
 ?>
 <!doctype html>
 <html class="h-100">

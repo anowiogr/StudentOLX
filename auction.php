@@ -11,7 +11,6 @@ try {
         $_SESSION['info']=null;
     }
 
-    // Sprawdzenie, czy przesłano ID aukcji
     if (isset($_GET['auction_id'])) {
         $auctionId = $_GET['auction_id'];
 
@@ -25,7 +24,6 @@ try {
         $stmt->execute();
         $auction = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Wyświetlanie informacji o wybranej aukcji
         if ($auction) {
             ?>
                 <div class="row col-md-1">
@@ -138,9 +136,6 @@ try {
 
                 $auctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-                //print_r($auctions);
-        // Wyświetlanie wszystkich aukcji z podstawowymi informacjami
         foreach ($auctions as $auction) {
             echo <<< TABLELISTA
                 <div class="row box p-3">
